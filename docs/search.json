@@ -23,8 +23,8 @@
   {
     "objectID": "data.html",
     "href": "data.html",
-    "title": "Data",
+    "title": "Your Title",
     "section": "",
-    "text": "Data source: xxx\n\n\n\n Back to top"
+    "text": "# Load necessary libraries\nlibrary(ggplot2)\n\n# Load the dataset\ndata &lt;- read.csv(\"yokatlas_data.csv\")\n\n# Create the bar plot for the 'capacity' column\nggplot(data, aes(x = factor(department), y = capacity)) +\n  geom_bar(stat = \"identity\", fill = \"skyblue\") +\n  theme_minimal() +\n  labs(title = \"Department Capacity\", x = \"Department\", y = \"Capacity\") +\n  theme(axis.text.x = element_text(angle = 45, hjust = 1))\n\nWarning: Removed 1 row containing missing values or values outside the scale range\n(`geom_bar()`).\n\n\n\n\n\n\n\n\n\n\n\n\n Back to top"
   }
 ]

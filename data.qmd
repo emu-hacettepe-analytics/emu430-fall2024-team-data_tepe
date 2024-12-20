@@ -1,5 +1,22 @@
 ---
-title: "Data"
+title: "Your Title"
+author: "Your Name"
+output: html_document
 ---
 
-Data source: xxx
+```{r}
+# Load necessary libraries
+library(ggplot2)
+
+# Load the dataset
+data <- read.csv("yokatlas_data.csv")
+
+# Create the bar plot for the 'capacity' column
+ggplot(data, aes(x = factor(department), y = capacity)) +
+  geom_bar(stat = "identity", fill = "skyblue") +
+  theme_minimal() +
+  labs(title = "Department Capacity", x = "Department", y = "Capacity") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
+
