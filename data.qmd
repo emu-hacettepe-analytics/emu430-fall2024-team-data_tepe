@@ -59,4 +59,3 @@ for (dept in departments) {
 }
 
 ```
-
