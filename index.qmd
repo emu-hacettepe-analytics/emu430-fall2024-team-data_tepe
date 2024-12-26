@@ -28,3 +28,5 @@ Comprehensive Analysis of Hacettepe University Engineering Faculty (2018-2024)
 This project focuses on a detailed analysis of the admissions and demographic trends in the Engineering Faculty of Hacettepe University over the period from 2018 to 2024. The analysis covers several key parameters: capasities, valedictorians, gender distribution, the geographical regions from which students originate, and the number of national preferences for the faculty. By examining these aspects, the project aims to highlight shifts in student demographics, changes in gender representation, regional diversity, and the popularity of the faculty across Turkey. The findings will provide valuable insights into the evolution of admission policies and the factors influencing student choices during this period.
 
 # Data Set
+
+1
