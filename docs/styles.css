@@ -1,1 +1,43 @@
 /* css styles */
+/* Sayfa arka planını lacivert yap */
+body {
+  background-color: #003B5C;  /* Lacivert arka plan */
+  color: #ffffff;  /* Beyaz metin */
+  font-family: Arial, sans-serif; /* Okunaklı yazı tipi */
+}
+
+/* Sayfa içindeki tüm başlıkların arka planını lacivert yap */
+h1, h2, h3 {
+  background-color: #003B5C;  /* Lacivert başlık arka planı */
+  color: #ffffff;  /* Beyaz başlık metni */
+  padding: 10px;  /* Başlık çevresine boşluk ekle */
+}
+
+/* Sayfanın sol tarafındaki yan menü veya sidebar'ın arka planını lacivert yap */
+aside, .sidebar, .left, .navbar {
+  background-color: #003B5C;  /* Lacivert arka plan */
+  color: #ffffff;  /* Beyaz metin */
+}
+
+/* Navbar içindeki bağlantıların beyaz rengini ayarla */
+.navbar a {
+  color: #ffffff;  /* Beyaz metin */
+  font-weight: bold;  /* Kalın yazı */
+}
+
+/* Sayfa genelindeki linkler için sarı rengi ayarla */
+a {
+  color: #FFD700;  /* Sarı renk */
+}
+
+a:hover {
+  color: #FF6347;  /* Hover rengi: domates kırmızısı */
+}
+
+/* Footer arka planını lacivert yap */
+.page-footer {
+  background-color: #003B5C;  /* Lacivert footer */
+  color: #ffffff;  /* Beyaz metin */
+  padding: 10px 0;
+  text-align: center;
+}

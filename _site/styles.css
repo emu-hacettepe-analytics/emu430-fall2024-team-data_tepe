@@ -1,1 +1,57 @@
 /* css styles */
+/* Arka plan rengi */
+body {
+  background-color: #f5f5f5;  /* Açık gri */
+  color: #333333;  /* Koyu gri metin */
+  font-family: Arial, sans-serif; /* Okunaklı ve sade yazı tipi */
+}
+
+/* Navbar arka plan ve metin renkleri */
+.navbar {
+  background-color: #004488;  /* Koyu mavi arka plan */
+}
+
+.navbar a {
+  color: #ffffff;  /* Beyaz metin */
+  font-weight: bold;  /* Kalın yazı */
+}
+
+/* Navbar'da linklerin üzerine gelince rengi */
+.navbar a:hover {
+  color: #ff7f50;  /* Mercan rengi */
+}
+
+/* Footer arka plan ve metin renkleri */
+.page-footer {
+  background-color: #004488;  /* Koyu mavi arka plan */
+  color: #ffffff;  /* Beyaz metin */
+  padding: 10px 0;  /* Yatay ve dikey boşluk */
+  text-align: center;  /* Ortalanmış metin */
+}
+
+/* Link rengi */
+a {
+  color: #ff7f50;  /* Mercan rengi */
+}
+
+a:hover {
+  color: #ff4500;  /* Koyu mercan rengi */
+}
+
+/* Başlık (H1) renkleri */
+h1, h2, h3 {
+  color: #333333;  /* Koyu gri başlık */
+}
+
+/* Butonlar için stil */
+button {
+  background-color: #004488;  /* Koyu mavi buton */
+  color: #ffffff;  /* Beyaz yazı */
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #ff7f50;  /* Mercan rengi üzerine gelince */
+}

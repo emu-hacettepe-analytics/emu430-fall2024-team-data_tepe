@@ -1,5 +1,5 @@
 ---
-title: "Team XXX"
+title: "Team Datatepe"
 sidebar: false 
 ---
 
@@ -7,18 +7,24 @@ This is our project webpage.
 
 Please stay tuned to follow our project activities.
 
-This is our template.
-
 # Team Members
 
-1.  [Edin_Džeko](https://tr.wikipedia.org/wiki/Edin_D%C5%BEeko)
+1.  [Yiğit Türkel](https://emu-hacettepe-analytics.github.io/emu430-fall2024-yigitturkel-lab/)
 
-2.  [Dušan Tadić](https://tr.wikipedia.org/wiki/Du%C5%A1an_Tadi%C4%87)
+2.  [Firuze İpek Yıldırım](https://emu-hacettepe-analytics.github.io/emu430-fall2024-firuzeipekyildirim/)
 
-3.  [Frederico Rodrigues de Paula Santos](https://tr.wikipedia.org/wiki/Fred_(1993_do%C4%9Fumlu_futbolcu))
+3.  [Muhammed Uğur Çubuk](https://emu-hacettepe-analytics.github.io/emu430-fall2024-mugurcubuk/)[ ](https://tr.wikipedia.org/wiki/Fred_(1993_do%C4%9Fumlu_futbolcu))
 
-4.  [Sebastian Szymański](https://tr.wikipedia.org/wiki/Sebastian_Szyma%C5%84ski)
+4.  [Elif Lorasdağı](https://emu-hacettepe-analytics.github.io/emu430-fall2024-elflrsdglab/)
+
+5.  [Hazan Fakılı](https://emu-hacettepe-analytics.github.io/emu430-fall2024-hazanfakili/)
+
+6.  [Tutku Altay](https://emu-hacettepe-analytics.github.io/emu430-fall2024-taltaylab/)
 
 # Project Topic
+
+Comprehensive Analysis of Hacettepe University Engineering Faculty (2018-2024)
+
+This project focuses on a detailed analysis of the admissions and demographic trends in the Engineering Faculty of Hacettepe University over the period from 2018 to 2024. The analysis covers several key parameters: capasities, valedictorians, gender distribution, the geographical regions from which students originate, and the number of national preferences for the faculty. By examining these aspects, the project aims to highlight shifts in student demographics, changes in gender representation, regional diversity, and the popularity of the faculty across Turkey. The findings will provide valuable insights into the evolution of admission policies and the factors influencing student choices during this period.
 
 # Data Set
