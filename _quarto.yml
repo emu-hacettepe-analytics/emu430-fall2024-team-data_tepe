@@ -32,6 +32,7 @@ format:
       light: simplex 
       dark: cyborg
     css: styles.css
+    code-fold: true
 
 editor: visual
 

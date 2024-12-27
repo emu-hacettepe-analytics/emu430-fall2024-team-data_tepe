@@ -3,7 +3,8 @@ title: "Your Title"
 author: "Your Name"
 output: html_document
 ---
-```{r}
+
+```{r,message = FALSE, warning = FALSE}
 
 # Load necessary libraries
 library(ggplot2)
