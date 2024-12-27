@@ -4,14 +4,8 @@ title: "Analysis"
 
 This page consists of analysis and key points about Hacettepe University Engineering Faculity datas between 2018-2024
 
-<<<<<<< HEAD
 ```{r,message = FALSE, warning = FALSE}
-=======
-```{r}
-```
 
-```{r}
->>>>>>> 8fd39460ec9e28ca9e3130ca8208364574ddea21
 # Load necessary libraries
 # Gerekli kütüphaneleri yükle
 library(ggplot2)
@@ -83,7 +77,6 @@ ggplot(data=data_filtered, aes(x=year, y=ranking, color=department, group=depart
 
 ```
 
-<<<<<<< HEAD
 ### **Analysis of the Graph**
 
 The graph illustrates the annual ranking changes for various engineering departments using an **inverted base-3 logarithmic scale** on the y-axis. This allows for better visualization of differences in rankings, especially when the values span a large range.
@@ -146,7 +139,7 @@ The graph illustrates the annual ranking changes for various engineering departm
 
     -   Rising fields like `AI_Eng` and `Environmental_Eng` should be closely monitored for potential resource allocation and strategic focus to capitalize on their upward trends.
 =======
-```{r}
+```{r,message = FALSE, warning = FALSE}
 # Gerekli kütüphaneleri yükle
 library(ggplot2)
 library(readr)
@@ -216,7 +209,7 @@ ggplot(data=data, aes(x=year, y=number_of_applications, color=department, group=
 
 ```
 
-```{r}
+```{r,message = FALSE, warning = FALSE}
 library(ggplot2)
 library(scales)
 library(readr)
@@ -268,4 +261,3 @@ ggplot(data=data, aes(x=year, y=number_of_applications, group=department, color=
   scale_x_continuous(breaks = unique(data$year))  # Ensure all years are shown
 
 ```
->>>>>>> 8fd39460ec9e28ca9e3130ca8208364574ddea21
