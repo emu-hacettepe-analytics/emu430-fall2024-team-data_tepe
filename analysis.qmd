@@ -5,7 +5,6 @@ title: "Analysis"
 This page consists of analysis and key points about Hacettepe University Engineering Faculity datas between 2018-2024
 
 ```{r,message = FALSE, warning = FALSE}
-
 # Load necessary libraries
 # Gerekli kütüphaneleri yükle
 library(ggplot2)
@@ -138,7 +137,7 @@ The graph illustrates the annual ranking changes for various engineering departm
 3.  **Monitoring Trends:**
 
     -   Rising fields like `AI_Eng` and `Environmental_Eng` should be closely monitored for potential resource allocation and strategic focus to capitalize on their upward trends.
-=======
+
 ```{r,message = FALSE, warning = FALSE}
 # Gerekli kütüphaneleri yükle
 library(ggplot2)
@@ -205,8 +204,6 @@ ggplot(data=data, aes(x=year, y=number_of_applications, color=department, group=
     plot.margin = margin(5, 5, 5, 5)  # Reduce plot margins
   ) +
   scale_x_continuous(breaks = unique(data$year))  # Ensure all years are shown
-
-
 ```
 
 ```{r,message = FALSE, warning = FALSE}
@@ -259,5 +256,237 @@ ggplot(data=data, aes(x=year, y=number_of_applications, group=department, color=
     legend.position="none"  # Remove legend for better facet display
   ) +
   scale_x_continuous(breaks = unique(data$year))  # Ensure all years are shown
+
+```
+
+**1. General Information About the Chart**
+
+-   The chart shows trends in the number of applications to departments over the years.
+
+-   It shows departments with the highest and lowest application trends.
+
+-   Significant changes in application patterns over specific years.
+
+-   The use of a **logarithmic scale** makes it easier to compare departments with vastly different application numbers.
+
+### **2. Key Observations**
+
+#### **a. Most Popular Departments**
+
+-   The lines with steep slopes or higher starting points indicate departments with more applications.
+
+-   For instance, **Computer Engineering**, **Electrical-Electronic Engineering**, and **Mechanical Engineering** stand out with significantly higher application numbers compared to other departments.
+
+#### **b. Departments with Low Applications**
+
+-    Departments like **Mining Engineering**, **Hydrogeology Engineering**, and **Environmental Engineering** seem to have consistently low application numbers.
+
+**3. Importance of Logarithmic Scale**
+
+-   **Why use a logarithmic scale?**
+
+    -   A base-2 logarithmic scale ensures trends in departments with vastly different application numbers are comparable and visible.
+
+### **3. Key Points Highlighted in the Analysis**
+
+#### **a. High-Interest Departments**
+
+The chart emphasizes the sustained popularity of Computer Engineering, Electrical-Electronic Engineering, and Mechanical Engineering. These fields align closely with current and emerging industry demands, explaining their high application numbers.
+
+#### **b. Turning Points in Trends**
+
+Specific years, such as the post-2020 period, mark significant increases in applications for technology-related departments. This pattern reflects the broader societal shift toward digitalization and the increased demand for skills in these areas.
+
+### **Conclusion**
+
+This analysis provides a comprehensive overview of department application trends over the years. It identifies popular fields, highlights underrepresented ones, and explains the factors driving these patterns. The use of a well-structured visualization ensures that these insights are communicated effectively and clearly.
+
+```{r,message = FALSE, warning = FALSE}
+# Gerekli kütüphaneleri yükle
+library(ggplot2)
+library(readr)
+library(dplyr)
+
+# Veriyi yükle
+data <- read_csv("ya_veri.csv")
+
+# 2018 yılını filtrele
+data <- filter(data, year != 2018)
+
+# En yüksek kadın ve erkek oranlarına sahip mühendislik bölümlerini bul
+top_women_department <- data %>%
+  group_by(department) %>%
+  summarise(avg_women = mean(percentage_women, na.rm = TRUE)) %>%
+  arrange(desc(avg_women)) %>%
+  slice(1) %>%
+  pull(department)
+
+top_men_department <- data %>%
+  group_by(department) %>%
+  summarise(avg_men = mean(percentage_men, na.rm = TRUE)) %>%
+  arrange(desc(avg_men)) %>%
+  slice(1) %>%
+  pull(department)
+
+# İlgili bölümler için grafik çizme fonksiyonu
+plot_gender_distribution <- function(department_name, valedictorian_color = "purple", axis_color = "black") {
+  department_data <- filter(data, department == department_name)
+  
+  # Y ekseni sınırlarını belirle
+  y_limits <- c(0, 140)
+  
+  ggplot(department_data) +
+    geom_bar(aes(x = factor(year), y = capacity, fill = "Men"), stat = "identity", position = "stack") +
+    geom_bar(aes(x = factor(year), y = capacity * (percentage_women / 100), fill = "Women"), stat = "identity", position = "stack") +
+    geom_line(aes(x = factor(year), y = valedictorian * 11, group = 1), color = valedictorian_color, linewidth = 0.75) +
+    geom_point(aes(x = factor(year), y = valedictorian * 11), color = valedictorian_color, size = 2) +
+    geom_text(aes(x = factor(year), y = capacity, label = paste0(percentage_men, "%")), 
+              vjust = -0.5, color = "#ede20c", size = 3, fontface = "bold") +
+    geom_text(aes(x = factor(year), y = capacity * (percentage_women / 100), label = paste0(percentage_women, "%")), 
+              vjust = 1.5, color = "#0c1bed", size = 3, fontface = "bold") +
+    geom_text(aes(x = factor(year), y = valedictorian * 11, label = valedictorian), 
+              color = valedictorian_color, size = 3, fontface = "bold", vjust = -1.5, hjust = 0.5) +
+    scale_y_continuous(name = "Capacity", limits = y_limits, breaks = seq(y_limits[1], y_limits[2], by = 10),
+                       sec.axis = sec_axis(~ . / 11, name = "Valedictorians", breaks = seq(1, 10, by = 1))) +
+    labs(title = department_name, x = "Year", fill = "Gender") +
+    scale_fill_manual(values = c("Women" = "#ede20c", "Men" = "#0c1bed")) +
+    theme_minimal() +
+    theme(plot.title = element_text(hjust = 0.5, size = 12),
+          axis.text.x = element_text(angle = 45, hjust = 1, size = 10),
+          axis.text.y = element_text(size = 10),
+          axis.text.y.right = element_text(color = axis_color, size = 10),
+          axis.title.y.right = element_text(color = axis_color, size = 12))
+}
+
+# Makine Mühendisliği için grafik (beyaz çizgi ve sayı)
+print(plot_gender_distribution("Mechanical_Eng", valedictorian_color = "white", axis_color = "black"))
+
+# Gıda Mühendisliği için grafik (siyah çizgi, sayı ve eksen)
+print(plot_gender_distribution("Food_Eng", valedictorian_color = "black", axis_color = "black"))
+
+
+```
+
+```{r,message = FALSE, warning = FALSE}
+# Gerekli kütüphaneleri yükle
+library(ggplot2)
+library(tidyr)
+library(dplyr)
+library(readr)
+
+# Veriyi yükle
+data_csv <- read_csv("ya_veri.csv")
+
+# 6 yıllık kadın ve erkek oranlarının ortalamasını hesapla
+data_avg <- data_csv %>%
+  filter(!is.na(percentage_women), !is.na(percentage_men)) %>% # Eksik değerleri filtrele
+  group_by(department) %>%
+  summarise(
+    Women = mean(percentage_women, na.rm = TRUE),
+    Men = mean(percentage_men, na.rm = TRUE)
+  ) %>%
+  arrange(desc(Women)) # Kadın oranlarına göre sıralama
+
+# Veriyi uzun formata dönüştür
+data_long <- data_avg %>%
+  pivot_longer(cols = c(Women, Men), names_to = "Gender", values_to = "Percentage")
+
+# Etiket pozisyonlarını hesapla
+data_long <- data_long %>%
+  group_by(department) %>%
+  mutate(
+    LabelPosition = ifelse(Gender == "Women", 10, 90), # Kadın oranı alt kısma, erkek oranı üst kısma
+    LabelColor = ifelse(Gender == "Women", "black", "white") # Kadın için siyah, erkek için beyaz
+  )
+
+# Bar grafiği oluştur
+ggplot(data_long, aes(x = reorder(department, -Percentage), y = Percentage, fill = Gender)) +
+  geom_bar(stat = "identity", width = 0.95) + # Bar genişliği ayarlandı
+  geom_text(aes(label = sprintf("%.2f", Percentage), y = LabelPosition, color = LabelColor),
+            angle = 90, size = 3, fontface = "bold", hjust = 0.5) + # Etiketler dikey
+  scale_fill_manual(values = c("Women" = "#ede20c", "Men" = "#0c1bed")) +
+  scale_color_identity() + # Önceden belirlenen renkler kullanılıyor
+  labs(
+    title = "Gender Distribution in Engineering Disciplines",
+    x = "Engineering Disciplines",
+    y = "Percentage",
+    fill = "Gender"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1, size = 8, face = "bold"), # X ekseni yazıları
+    plot.title = element_text(face = "bold", hjust = 0.5) # Başlık ortalanmış ve kalın
+  )
+
+```
+```{r,message = FALSE, warning = FALSE}
+library(knitr)
+include_graphics("a.png")
+```
+
+```{r, fig.show="hide", message = FALSE, warning = FALSE}
+# Load necessary libraries
+library(tidyr)
+library(dplyr)
+library(ggplot2)
+library(forcats)
+library(readr)
+library(stringr)  # For str_wrap()
+
+# Load the dataset
+data <- read_csv("ya_veri.csv")
+
+# Exclude 2018 and reshape the data
+data_tidy <- data %>%
+  filter(year != 2018) %>%
+  select(department, year, akdeniz, dogu_anadolu, ege, guneydogu_anadolu, ic_anadolu, karadeniz, marmara) %>%
+  pivot_longer(
+    cols = c(akdeniz, dogu_anadolu, ege, guneydogu_anadolu, ic_anadolu, karadeniz, marmara),
+    names_to = "region",
+    values_to = "percentage_contribution"
+  ) %>%
+  mutate(region = fct_relevel(region, 
+    "ic_anadolu", "marmara", "guneydogu_anadolu", "doğu_anadolu", "akdeniz", "ege", "karadeniz")) %>%
+  filter(!is.na(percentage_contribution)) %>%
+  group_by(department, year) %>%
+  mutate(region = fct_reorder(region, -percentage_contribution, .desc = TRUE)) %>%
+  ungroup()
+
+# Define the color palette, including all regions
+region_colors <- c(
+  "ic_anadolu" = "#e8736b",
+  "marmara" = "#54a115",
+  "guneydogu_anadolu" = "#053eb0",
+  "doğu_anadolu" = "#ff9900",
+  "akdeniz" = "#7705b0",
+  "karadeniz" = "#b0054a",
+  "ege" = "#d1f299"
+)
+
+# Plot: Department Breakdown by Year
+ggplot(data=data_tidy, aes(x=interaction(department, year), y=percentage_contribution, fill=region)) +
+  geom_bar(stat="identity", position="fill") +
+  labs(
+    title="Department and Year",
+    x="Department and Year (Alphabetical Order)",
+    y="Percentage Contribution",
+    fill="Region"
+  ) +
+  scale_y_continuous(labels = scales::percent_format()) +
+  scale_fill_manual(values = region_colors) +
+  theme_minimal(base_size = 10) +
+  theme(
+    axis.text.x = element_blank(),  # Remove x-axis labels for less clutter
+    axis.ticks.x = element_blank(),
+    axis.text.y = element_text(size = 10),
+    axis.title = element_text(size = 12),
+    plot.title = element_text(size = 16, face = "bold", hjust = 0.5, lineheight = 1.2),  # Two-line title
+    plot.title.position = "plot",
+    legend.title = element_text(size = 10),  # Smaller legend title
+    legend.text = element_text(size = 8),  # Smaller legend text
+    legend.key.size = unit(0.5, "cm"),  # Smaller legend boxes
+    legend.spacing.y = unit(0.2, "cm"),  # Reduce vertical spacing between legend items
+    plot.margin = margin(40, 60, 40, 40)  # Add right margin for wider plot
+  )
 
 ```

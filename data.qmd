@@ -1,6 +1,6 @@
 ---
-title: "Your Title"
-author: "Your Name"
+title: "Visualizations to Analyze"
+author: "Datatepe"
 output: html_document
 ---
 
@@ -61,8 +61,71 @@ for (dept in departments) {
 
 ```
 
-<<<<<<< HEAD
-```{r}
+### **Brief Overview**
+
+The graph visualizes annual data for each department, showing:
+
+1.  **Total student capacity**,
+
+2.  **Gender distribution (women and men percentages)**,
+
+3.  **Valedictorian (top student) numbers**.
+
+There is a general trend of increasing female student ratios over the years, while valedictorian numbers remain relatively low compared to total capacity.
+
+### **Key Points to Highlight**
+
+#### 1. **Changes in Gender Distribution**
+
+-   **Increase in Female Student Ratios:**\
+    Most departments show a steady increase in female student ratios over the years. For example, in `Chemical_Eng`, the female ratio increased from 63.4% in 2019 to 68.3% in 2022.
+
+-   **Decline in Male Student Ratios:**\
+    Corresponding to the rise in female ratios, male student ratios show a decrease across most departments.
+
+#### 2. **Valedictorian Trends**
+
+-   Valedictorian numbers are consistent in some departments, such as `Computer_Eng`, but show significant fluctuations in others, such as `Chemical_Eng`.
+
+-   Examples:
+
+    -   `Chemical_Eng`: Valedictorian count dropped from 3 in 2019 to 2 in 2020 and remained stable afterward.
+
+    -   `Computer_Eng`: A noticeable increase in valedictorian numbers in 2022 compared to previous years.
+
+#### 3. **Fluctuations in Total Capacity**
+
+-   **Example:**\
+    `Chemical_Eng` had a stable capacity from 2018 to 2021 (82 students) but experienced a 12.2% decrease in 2022 (down to 72 students).
+
+-   Some departments maintain a steady capacity, while others fluctuate significantly.
+
+#### 4. **Notable Differences Between Departments**
+
+-   **`Computer_Eng`:**
+
+    -   Has a higher y-axis limit (140), reflecting a larger student intake compared to other departments.
+
+    -   Shows more consistent trends in valedictorian numbers and gender ratios.
+
+-   **`Chemical_Eng`:**
+
+    -   Exhibits a relatively higher female student ratio compared to other departments.
+
+    -   Shows a decline in total capacity over the years.
+
+### **Insights and Recommendations**
+
+1.  **Increase in Female Student Ratios:**\
+    The rising female student ratios indicate either improved educational policies or growing interest among female students in these departments.
+
+2.  **Valedictorian Numbers vs. Capacity:**\
+    The low valedictorian numbers relative to total capacity suggest the need for further performance analysis and academic support in specific departments.
+
+3.  **Capacity Variations Between Departments:**\
+    Departments like `Computer_Eng` accommodate larger student intakes while maintaining stable valedictorian numbers, which can be studied as a model for scalability.
+
+```{r,message = FALSE, warning = FALSE}
 # Load necessary libraries
 library(tidyr)
 library(dplyr)
@@ -124,85 +187,53 @@ ggplot(data=data_tidy, aes(x=year, y=percentage_contribution, fill=region)) +
     legend.text = element_text(size = 8)
   )
 
-# Save the plot
-ggsave("department_breakdown_with_full_legend.png", width = 25, height = 15)
 
 ```
 
-```{r}
-# Load necessary libraries
-# Load necessary libraries
-library(tidyr)
-library(dplyr)
-library(ggplot2)
-library(forcats)
-library(readr)
+### **1. General Information About the Chart**
 
-# Load the dataset
-data <- read_csv("ya_veri.csv")
+-   The chart presents how different regions contributed to university departments over multiple years.
 
-# Exclude 2018 and reshape the data
-data_tidy <- data %>%
-  filter(year != 2018) %>%
-  select(department, year, akdeniz, dogu_anadolu, ege, guneydogu_anadolu, ic_anadolu, karadeniz, marmara) %>%
-  pivot_longer(
-    cols = c(akdeniz, dogu_anadolu, ege, guneydogu_anadolu, ic_anadolu, karadeniz, marmara),
-    names_to = "region",
-    values_to = "percentage_contribution"
-  ) %>%
-  mutate(region = fct_relevel(region, 
-    "ic_anadolu", "marmara", "guneydogu_anadolu", "doğu_anadolu", "akdeniz", "ege", "karadeniz")) %>%
-  filter(!is.na(percentage_contribution)) %>%
-  group_by(department, year) %>%
-  mutate(region = fct_reorder(region, -percentage_contribution, .desc = TRUE)) %>%
-  ungroup()
+-   It highlights proportional contributions by region and shows how trends shifted across departments.
 
-# Define the color palette, including all regions
-region_colors <- c(
-  "ic_anadolu" = "#e8736b",
-  "marmara" = "#54a115",
-  "guneydogu_anadolu" = "#053eb0",
-  "doğu_anadolu" = "#ff9900",
-  "akdeniz" = "#7705b0",
-  "karadeniz" = "#b0054a",
-  "ege" = "#d1f299"
-)
+-   The visualization uses a **stacked bar chart** to represent percentage contributions, enabling easy comparison of regional dynamics.
 
-# Plot: Department Breakdown by Year
-ggplot(data=data_tidy, aes(x=year, y=percentage_contribution, fill=region)) +
-  geom_bar(stat="identity", position="fill") +
-  facet_wrap(~department, ncol = 3) +  # Reduce the number of columns to make plots wider
-  labs(
-    title="Department Breakdown by Year",
-    x="Year",
-    y="Percentage Contribution",
-    fill="Region"
-  ) +
-  scale_y_continuous(labels = scales::percent_format()) +
-  scale_fill_manual(values = region_colors) +
-  theme_minimal(base_size = 12) +
-  theme(
-    strip.text = element_text(size = 10, face = "bold"),
-    axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1, size = 8),
-    axis.text.y = element_text(size = 10),
-    axis.title = element_text(size = 12),
-    plot.title = element_text(size = 16, face = "bold", hjust = 0.5, lineheight = 1.2),  # Two-line title
-    legend.title = element_text(size = 12),
-    legend.text = element_text(size = 10),
-    legend.key.size = unit(0.5, "cm"),  # Smaller legend boxes
-    legend.spacing.y = unit(0.3, "cm"),  # Reduce vertical spacing in legend
-    plot.margin = margin(20, 20, 20, 20)  # Adjust margins
-  )
+### **2. Key Observations**
 
-# Save the plot
-ggsave("department_breakdown_no_whitespace.png", width = 25, height = 18)
+#### **a. Dominant Regions**
 
+-   **İç Anadolu** has consistently been the leading contributor across most departments, reflecting the university's location.
 
+-   **Marmara** also contributes significantly but shows a gradual decline in recent years.
 
+#### **b. Regional Shifts**
+
+-   **Southeastern Anatolia** experienced a sharp increase in 2023 contributions, likely due to the earthquake, boosting interest in civil and geology engineering.
+
+-   **Aegean** and **Mediterranean** regions display variability, with notable recoveries in recent years.
+
+#### **c. Stable Trends**
+
+-   **Karadeniz** shows steady contributions over time, with minor fluctuations.
+
+### **3. Insights**
+
+-   Proximity plays a key role, as **İç Anadolu** dominates due to accessibility.
+
+-   External factors like the **2023 earthquake** significantly impacted regional contributions, particularly from **Southeastern Anatolia**.
+
+-   Some regions, like **Karadeniz**, show stability, while others, such as **Aegean**, reveal periodic shifts, reflecting local factors.
+
+### **Conclusion**
+
+This analysis highlights regional preferences and shifts in contributions to university departments. It provides a clear understanding of dominant regions, stable contributors, and regions affected by external influences. The visualization effectively communicates these trends, offering valuable insights into regional dynamics.
+
+```{r,message = FALSE, warning = FALSE}
+library(knitr)
+include_graphics("a.png")
 ```
 
-```{r}
-# Load necessary libraries
+```{r, fig.show="hide", message = FALSE, warning = FALSE}
 # Load necessary libraries
 library(tidyr)
 library(dplyr)
@@ -267,74 +298,4 @@ ggplot(data=data_tidy, aes(x=interaction(department, year), y=percentage_contrib
     plot.margin = margin(40, 60, 40, 40)  # Add right margin for wider plot
   )
 
-# Save the plot with a wider layout
-ggsave("department_contributions_wider.png", width = 35, height = 16)
-
 ```
-=======
-**Brief Overview**
-
-The graph visualizes annual data for each department, showing:
-
-1.  ***Total student capacity,***
-
-2.  ***Gender distribution (women and men percentages),***
-
-3.  ***Valedictorian (top student) numbers.***
-
-There is a general trend of increasing female student ratios over the years, while valedictorian numbers remain relatively low compared to total capacity.
-
-### **Key Points to Highlight**
-
-#### 1. **Changes in Gender Distribution**
-
--   **Increase in Female Student Ratios:**\
-    Most departments show a steady increase in female student ratios over the years. For example, in `Chemical_Eng`, the female ratio increased from 63.4% in 2019 to 68.3% in 2022.
-
--   **Decline in Male Student Ratios:**\
-    Corresponding to the rise in female ratios, male student ratios show a decrease across most departments.
-
-#### 2. **Valedictorian Trends**
-
--   Valedictorian numbers are consistent in some departments, such as `Computer_Eng`, but show significant fluctuations in others, such as `Chemical_Eng`.
-
--   Examples:
-
-    -   `Chemical_Eng`: Valedictorian count dropped from 3 in 2019 to 2 in 2020 and remained stable afterward.
-
-    -   `Computer_Eng`: A noticeable increase in valedictorian numbers in 2022 compared to previous years.
-
-#### 3. **Fluctuations in Total Capacity**
-
--   **Example:**\
-    `Chemical_Eng` had a stable capacity from 2018 to 2021 (82 students) but experienced a 12.2% decrease in 2022 (down to 72 students).
-
--   Some departments maintain a steady capacity, while others fluctuate significantly.
-
-#### 4. **Notable Differences Between Departments**
-
--   **`Computer_Eng`:**
-
-    -   Has a higher y-axis limit (140), reflecting a larger student intake compared to other departments.
-
-    -   Shows more consistent trends in valedictorian numbers and gender ratios.
-
--   **`Chemical_Eng`:**
-
-    -   Exhibits a relatively higher female student ratio compared to other departments.
-
-    -   Shows a decline in total capacity over the years.
-
-### **Insights and Recommendations**
-
-1.  **Increase in Female Student Ratios:**\
-    The rising female student ratios indicate either improved educational policies or growing interest among female students in these departments.
-
-2.  **Valedictorian Numbers vs. Capacity:**\
-    The low valedictorian numbers relative to total capacity suggest the need for further performance analysis and academic support in specific departments.
-
-3.  **Capacity Variations Between Departments:**\
-    Departments like `Computer_Eng` accommodate larger student intakes while maintaining stable valedictorian numbers, which can be studied as a model for scalability.
-
-### 
->>>>>>> b75ccbdb3d1ec40253d2789e90822faeeca24c8b
