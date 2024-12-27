@@ -2,12 +2,10 @@
 title: "Analysis"
 ---
 
-About this site
+This page consists of analysis and key points about Hacettepe University Engineering Faculity datas between 2018-2024
 
-```{r}
-```
+```{r,message = FALSE, warning = FALSE}
 
-```{r}
 # Load necessary libraries
 # Gerekli kütüphaneleri yükle
 library(ggplot2)
@@ -79,7 +77,69 @@ ggplot(data=data_filtered, aes(x=year, y=ranking, color=department, group=depart
 
 ```
 
-```{r}
+### **Analysis of the Graph**
+
+The graph illustrates the annual ranking changes for various engineering departments using an **inverted base-3 logarithmic scale** on the y-axis. This allows for better visualization of differences in rankings, especially when the values span a large range.
+
+### **Key Observations**
+
+#### 1. **Ranking Scale and Inverted Axis**
+
+-   The y-axis represents the rankings in an **inverted order**, meaning lower values (e.g., 900) are at the top, representing better rankings, while higher values (e.g., 218,700) are at the bottom.
+
+-   The logarithmic scale (base 3) compresses large ranking ranges, making differences at higher ranks more visible.
+
+#### 2. **Trends Across Departments**
+
+-   Departments such as **Computer_Eng**, **Electrical_Electronic_Eng**, and **Mechanical_Eng** consistently maintain strong rankings (closer to the top).
+
+-   Some departments, such as **Geology_Eng** and **Hydrogeology_Eng**, exhibit more volatile or declining trends, with rankings fluctuating significantly across years.
+
+#### 3. **Departments with Notable Improvements**
+
+-   **AI_Eng**: Shows consistent improvement over the years, likely reflecting the growing demand for AI-related skills.
+
+-   **Environmental_Eng**: Gradual improvement in rankings, potentially tied to increased focus on sustainability and environmental concerns.
+
+#### 4. **Departments with Declining or Stable Trends**
+
+-   **Mining_Eng** and **Nuclear_Energy_Eng** show a downward trend or stagnation, possibly due to reduced student interest or demand in these fields.
+
+-   **Geomatic_Eng**: Rankings remain stable, with minor fluctuations year to year.
+
+### **Points to Highlight**
+
+1.  **High-Performing Departments:**
+
+    -   `Computer_Eng` and `Electrical_Electronic_Eng` dominate in rankings, consistently outperforming other departments. This could be tied to their relevance in high-demand industries such as technology and electronics.
+
+2.  **Emerging Trends:**
+
+    -   Fields like `AI_Eng` and `Environmental_Eng` show positive momentum, reflecting their growing importance in modern industries.
+
+3.  **Fields Facing Challenges:**
+
+    -   Traditional disciplines like `Mining_Eng` and `Hydrogeology_Eng` appear to struggle with maintaining their rankings, which may signal declining interest or resource constraints.
+
+4.  **Impact of Logarithmic Scale:**
+
+    -   The base-3 logarithmic transformation helps visualize smaller differences in rankings at lower ranks while compressing larger differences at higher ranks.
+
+### **Insights and Recommendations**
+
+1.  **Improving Low-Performing Departments:**
+
+    -   Strategies could be developed to enhance the appeal and competitiveness of fields like `Mining_Eng` and `Nuclear_Energy_Eng`, possibly through curriculum updates or emphasizing interdisciplinary applications.
+
+2.  **Sustaining High Performers:**
+
+    -   Departments like `Computer_Eng` and `Electrical_Electronic_Eng` should continue leveraging their strong market relevance to attract top talent and improve further.
+
+3.  **Monitoring Trends:**
+
+    -   Rising fields like `AI_Eng` and `Environmental_Eng` should be closely monitored for potential resource allocation and strategic focus to capitalize on their upward trends.
+=======
+```{r,message = FALSE, warning = FALSE}
 # Gerekli kütüphaneleri yükle
 library(ggplot2)
 library(readr)
@@ -149,7 +209,7 @@ ggplot(data=data, aes(x=year, y=number_of_applications, color=department, group=
 
 ```
 
-```{r}
+```{r,message = FALSE, warning = FALSE}
 library(ggplot2)
 library(scales)
 library(readr)
