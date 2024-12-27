@@ -5,6 +5,9 @@ title: "Analysis"
 About this site
 
 ```{r}
+```
+
+```{r}
 # Load necessary libraries
 # Gerekli kütüphaneleri yükle
 library(ggplot2)
@@ -73,5 +76,109 @@ ggplot(data=data_filtered, aes(x=year, y=ranking, color=department, group=depart
   ) +
   scale_x_continuous(breaks = unique(data_filtered$year))  # Ensure all years are shown
 
+
+```
+
+```{r}
+# Gerekli kütüphaneleri yükle
+library(ggplot2)
+library(readr)
+library(dplyr)
+library(scales) # Logaritmik dönüşüm için
+
+# Veriyi yükle
+data <- read_csv("ya_veri.csv")
+
+# Veriyi filtrele ve sıralama bilgilerini numeric olarak düzenle
+data_filtered <- data %>%
+  select(department, year, ranking) %>%
+  filter(!is.na(ranking)) %>%
+  mutate(ranking = as.numeric(ranking))
+
+
+ggplot(data=data, aes(x=year, y=number_of_applications, color=department, group=department)) +
+  geom_line(linewidth=0.6) +  # Thinner lines
+  geom_point(size=1.2) +  # Smaller points
+  scale_y_continuous(
+    name="Number of Applications (Base 2 Log)",
+    trans = log_trans(base = 2),  # Base-2 logarithmic scale
+    breaks = c(50, 100, 200, 400, 800, 1600, 3200, 6400, 9792),  # Add 9792 to the breaks
+    labels = c("50", "100", "200", "400", "800", "1.6k", "3.2k", "6.4k", "9.8k")  # Formatted labels
+  ) +
+  scale_color_manual(
+    values = c(
+      "Chemical_Eng" = "#f70753", 
+      "Mining_Eng" = "#f707eb", 
+      "Geology_Eng" = "#450015", 
+      "Geomatic_Eng" = "#a89200", 
+      "Enviromental_Eng" = "#00a80e", 
+      "Industrial_Eng" = "#004506", 
+      "AI_Eng" = "#333333", 
+      "Hydrogeology_Eng" = "#102457", 
+      "Physics_Eng" = "#0047fa", 
+      "Computer_Eng" = "#fa4700", 
+      "Mechanical_Eng" = "#912fed", 
+      "Electrical_Electronic_Eng" = "#031a73", 
+      "Food_Eng" = "#5778ff", 
+      "Civil_Eng" = "#ff57e9", 
+      "Nuclear_Energy_Eng" = "#149e08",
+      "Other" = "#c2501b"  # Default color for additional departments
+    )
+  ) +
+  labs(
+    title="Department Applications Over the Years (Base 2 Logarithmic Scale)",
+    x="Years",
+    y="Number of Applications"
+  ) +
+  theme_minimal(base_size = 10) +  # Compact theme
+  theme(
+    legend.position="bottom",  # Legend below the graph
+    legend.title=element_text(size=8),  # Smaller legend title
+    legend.text=element_text(size=6),  # Smaller legend labels
+    legend.key.size=unit(0.4, "cm"),  # Smaller legend keys
+    legend.box = "horizontal",  # Horizontal legend layout
+    legend.spacing.x = unit(0.1, "cm"),  # Reduce legend spacing
+    axis.text.x=element_text(size=8, angle=45, hjust=1),  # Smaller x-axis labels
+    axis.text.y=element_text(size=8),  # Smaller y-axis labels
+    axis.title=element_text(size=9),  # Smaller axis titles
+    plot.title=element_text(size=12, face="bold", hjust=0.5),  # Compact title
+    plot.margin = margin(5, 5, 5, 5)  # Reduce plot margins
+  ) +
+  scale_x_continuous(breaks = unique(data$year))  # Ensure all years are shown
+
+
+```
+
+```{r}
+library(ggplot2)
+library(scales) # For formatting
+# Veriyi yükle
+data <- read_csv("ya_veri.csv")
+
+# Veriyi filtrele ve sıralama bilgilerini numeric olarak düzenle
+data_filtered <- data %>%
+  select(department, year, ranking) %>%
+  filter(!is.na(ranking)) %>%
+  mutate(ranking = as.numeric(ranking))
+
+ggplot(data=data, aes(x=year, y=number_of_applications, group=department)) +
+  geom_line(linewidth=0.6, color="black") +  # Black lines for consistency
+  geom_point(size=1.2, color="black") +  # Black points
+  facet_wrap(~department, scales="free_y") +  # Create separate plots for each department
+  labs(
+    title="Number of Applications by Department",
+    x="Year",
+    y="Number of Applications"
+  ) +
+  theme_minimal(base_size = 10) +  # Compact layout
+  theme(
+    strip.text=element_text(size=8, face="bold"),  # Bold department labels
+    axis.text.x=element_text(size=8, angle=45, hjust=1),  # Smaller x-axis labels
+    axis.text.y=element_text(size=8),  # Smaller y-axis labels
+    axis.title=element_text(size=9),  # Smaller axis titles
+    plot.title=element_text(size=12, face="bold", hjust=0.5),  # Compact title
+    plot.margin = margin(5, 5, 5, 5)  # Reduce plot margins
+  ) +
+  scale_x_continuous(breaks = unique(data$year))  # Ensure all years are shown
 
 ```
