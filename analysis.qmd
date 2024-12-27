@@ -151,20 +151,38 @@ ggplot(data=data, aes(x=year, y=number_of_applications, color=department, group=
 
 ```{r}
 library(ggplot2)
-library(scales) # For formatting
-# Veriyi yükle
+library(scales)
+library(readr)
+library(dplyr)
+
+# Load the dataset
 data <- read_csv("ya_veri.csv")
 
-# Veriyi filtrele ve sıralama bilgilerini numeric olarak düzenle
-data_filtered <- data %>%
-  select(department, year, ranking) %>%
-  filter(!is.na(ranking)) %>%
-  mutate(ranking = as.numeric(ranking))
-
-ggplot(data=data, aes(x=year, y=number_of_applications, group=department)) +
-  geom_line(linewidth=0.6, color="black") +  # Black lines for consistency
-  geom_point(size=1.2, color="black") +  # Black points
+# Plot with separate facets for each department and custom colors
+ggplot(data=data, aes(x=year, y=number_of_applications, group=department, color=department)) +
+  geom_line(linewidth=0.6) +  # Custom colored lines
+  geom_point(size=1.2) +  # Custom colored points
   facet_wrap(~department, scales="free_y") +  # Create separate plots for each department
+  scale_color_manual(
+    values = c(
+      "Chemical_Eng" = "#f70753", 
+      "Mining_Eng" = "#f707eb", 
+      "Geology_Eng" = "#450015", 
+      "Geomatic_Eng" = "#a89200", 
+      "Enviromental_Eng" = "#00a80e", 
+      "Industrial_Eng" = "#004506", 
+      "AI_Eng" = "#333333", 
+      "Hydrogeology_Eng" = "#102457", 
+      "Physics_Eng" = "#0047fa", 
+      "Computer_Eng" = "#fa4700", 
+      "Mechanical_Eng" = "#912fed", 
+      "Electrical_Electronic_Eng" = "#031a73", 
+      "Food_Eng" = "#5778ff", 
+      "Civil_Eng" = "#ff57e9", 
+      "Nuclear_Energy_Eng" = "#149e08",
+      "Other" = "#c2501b"  # Default color for additional departments
+    )
+  ) +
   labs(
     title="Number of Applications by Department",
     x="Year",
@@ -177,7 +195,8 @@ ggplot(data=data, aes(x=year, y=number_of_applications, group=department)) +
     axis.text.y=element_text(size=8),  # Smaller y-axis labels
     axis.title=element_text(size=9),  # Smaller axis titles
     plot.title=element_text(size=12, face="bold", hjust=0.5),  # Compact title
-    plot.margin = margin(5, 5, 5, 5)  # Reduce plot margins
+    plot.margin = margin(5, 5, 5, 5),  # Reduce plot margins
+    legend.position="none"  # Remove legend for better facet display
   ) +
   scale_x_continuous(breaks = unique(data$year))  # Ensure all years are shown
 
