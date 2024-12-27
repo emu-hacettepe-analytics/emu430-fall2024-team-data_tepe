@@ -60,3 +60,69 @@ for (dept in departments) {
 }
 
 ```
+
+**Brief Overview**
+
+The graph visualizes annual data for each department, showing:
+
+1.  ***Total student capacity,***
+
+2.  ***Gender distribution (women and men percentages),***
+
+3.  ***Valedictorian (top student) numbers.***
+
+There is a general trend of increasing female student ratios over the years, while valedictorian numbers remain relatively low compared to total capacity.
+
+### **Key Points to Highlight**
+
+#### 1. **Changes in Gender Distribution**
+
+-   **Increase in Female Student Ratios:**\
+    Most departments show a steady increase in female student ratios over the years. For example, in `Chemical_Eng`, the female ratio increased from 63.4% in 2019 to 68.3% in 2022.
+
+-   **Decline in Male Student Ratios:**\
+    Corresponding to the rise in female ratios, male student ratios show a decrease across most departments.
+
+#### 2. **Valedictorian Trends**
+
+-   Valedictorian numbers are consistent in some departments, such as `Computer_Eng`, but show significant fluctuations in others, such as `Chemical_Eng`.
+
+-   Examples:
+
+    -   `Chemical_Eng`: Valedictorian count dropped from 3 in 2019 to 2 in 2020 and remained stable afterward.
+
+    -   `Computer_Eng`: A noticeable increase in valedictorian numbers in 2022 compared to previous years.
+
+#### 3. **Fluctuations in Total Capacity**
+
+-   **Example:**\
+    `Chemical_Eng` had a stable capacity from 2018 to 2021 (82 students) but experienced a 12.2% decrease in 2022 (down to 72 students).
+
+-   Some departments maintain a steady capacity, while others fluctuate significantly.
+
+#### 4. **Notable Differences Between Departments**
+
+-   **`Computer_Eng`:**
+
+    -   Has a higher y-axis limit (140), reflecting a larger student intake compared to other departments.
+
+    -   Shows more consistent trends in valedictorian numbers and gender ratios.
+
+-   **`Chemical_Eng`:**
+
+    -   Exhibits a relatively higher female student ratio compared to other departments.
+
+    -   Shows a decline in total capacity over the years.
+
+### **Insights and Recommendations**
+
+1.  **Increase in Female Student Ratios:**\
+    The rising female student ratios indicate either improved educational policies or growing interest among female students in these departments.
+
+2.  **Valedictorian Numbers vs. Capacity:**\
+    The low valedictorian numbers relative to total capacity suggest the need for further performance analysis and academic support in specific departments.
+
+3.  **Capacity Variations Between Departments:**\
+    Departments like `Computer_Eng` accommodate larger student intakes while maintaining stable valedictorian numbers, which can be studied as a model for scalability.
+
+### 
