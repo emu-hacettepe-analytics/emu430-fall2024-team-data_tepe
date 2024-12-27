@@ -429,7 +429,64 @@ ggplot(data_long, aes(x = reorder(department, -Percentage), y = Percentage, fill
 ```
 
 It is visible that men have a higher percenntage then women overall, this may be a result of stereotypes again, very sadly Türkiye has a prejudice such as "Men should earn money and women should take care of the house". Some of you may not see this in real life but there is a reason why Doğu region has a lower percantage that can not be ignored.
+```{r, message = FALSE, warning = FALSE}
 
+# Load necessary libraries
+library(ggplot2)
+library(readr)
+library(dplyr)
+
+# Load the datasetyy
+data <- read_csv("ya_veri.csv")
+
+# Filter out 2018 data
+data <- filter(data, year != 2018)
+
+# Function to plot gender distribution
+plot_gender_distribution <- function(department_name) {
+  department_data <- filter(data, department == department_name)
+  
+  # Define y-axis limits based on department
+  y_limits <- if (department_name == "Computer_Eng") {
+    c(0, 140)
+  } else {
+    c(0, 110)
+  }
+  
+  ggplot(department_data) +
+    geom_bar(aes(x = factor(year), y = capacity, fill = "Men"), stat = "identity", position = "stack") +
+    geom_bar(aes(x = factor(year), y = capacity * (percentage_women / 100), fill = "Women"), stat = "identity", position = "stack") +
+    geom_line(aes(x = factor(year), y = valedictorian * 11, group = 1), color = "purple", linewidth = 0.75) +
+    geom_point(aes(x = factor(year), y = valedictorian * 11), color = "purple", size = 2) +
+    geom_text(aes(x = factor(year), y = capacity, label = paste0(percentage_men, "%")), 
+              vjust = -0.5, color = "pink", size = 3, fontface = "bold") +
+    geom_text(aes(x = factor(year), y = capacity * (percentage_women / 100), label = paste0(percentage_women, "%")), 
+              vjust = 1.5, color = "navy", size = 3, fontface = "bold") +
+    geom_text(aes(x = factor(year), y = valedictorian * 11, label = valedictorian), 
+              color = "purple", size = 3, fontface = "bold", vjust = -1.5, hjust = 0.5) +
+    scale_y_continuous(name = "Capacity", limits = y_limits, breaks = seq(y_limits[1], y_limits[2], by = 10),
+                       sec.axis = sec_axis(~ . / 11, name = "Valedictorians", breaks = seq(1, 10, by = 1))) +
+    labs(title = department_name, x = "Year", fill = "Gender") +
+    scale_fill_manual(values = c("Women" = "pink", "Men" = "navy")) +
+    theme_minimal() +
+    theme(plot.title = element_text(hjust = 0.5, size = 12),
+          axis.text.x = element_text(angle = 45, hjust = 1, size = 10),
+          axis.text.y = element_text(size = 10),
+          axis.text.y.right = element_text(color = "purple", size = 10),
+          axis.title.y.right = element_text(color = "purple", size = 12))
+}
+
+# List of departments
+departments <- unique(data$department)
+
+# Create and print plots in a single column
+for (dept in departments) {
+  print(plot_gender_distribution(dept))
+}
+
+```
+
+all of the departments valedictorian, capacity and gender percetage charts.
 # 6 Years of Region Precentages of All Engineering Departments
 
 ```{r,message = FALSE, warning = FALSE}
