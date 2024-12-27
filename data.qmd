@@ -132,7 +132,7 @@ library(dplyr)
 library(ggplot2)
 library(forcats)
 library(readr)
-library(stringr)  # For str_wrap()
+library(stringr)
 
 # Load the dataset
 data <- read_csv("ya_veri.csv")
@@ -147,7 +147,7 @@ data_tidy <- data %>%
     values_to = "percentage_contribution"
   ) %>%
   mutate(region = fct_relevel(region, 
-    "ic_anadolu", "marmara", "guneydogu_anadolu", "doğu_anadolu", "akdeniz", "ege", "karadeniz")) %>%
+    "ic_anadolu", "marmara", "guneydogu_anadolu", "dogu_anadolu", "akdeniz", "ege", "karadeniz")) %>%
   filter(!is.na(percentage_contribution)) %>%
   group_by(department, year) %>%
   mutate(region = fct_reorder(region, -percentage_contribution, .desc = TRUE)) %>%
@@ -158,7 +158,7 @@ region_colors <- c(
   "ic_anadolu" = "#e8736b",
   "marmara" = "#54a115",
   "guneydogu_anadolu" = "#053eb0",
-  "doğu_anadolu" = "#ff9900",
+  "dogu_anadolu" = "#ff9900",  # Ensure correct name here
   "akdeniz" = "#7705b0",
   "karadeniz" = "#b0054a",
   "ege" = "#d1f299"
@@ -186,6 +186,7 @@ ggplot(data=data_tidy, aes(x=year, y=percentage_contribution, fill=region)) +
     legend.title = element_text(size = 10),
     legend.text = element_text(size = 8)
   )
+
 
 
 ```
