@@ -430,7 +430,8 @@ ggplot(data_long, aes(x = reorder(department, -Percentage), y = Percentage, fill
 
 It is visible that men have a higher percenntage then women overall, this may be a result of stereotypes again, very sadly Türkiye has a prejudice such as "Men should earn money and women should take care of the house". Some of you may not see this in real life but there is a reason why Doğu region has a lower percantage that can not be ignored.
 
-#6 Years of Region Precentages of All Engineering Departments
+# 6 Years of Region Precentages of All Engineering Departments
+
 ```{r,message = FALSE, warning = FALSE}
 library(knitr)
 include_graphics("a.png")
