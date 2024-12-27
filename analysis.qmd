@@ -300,7 +300,7 @@ Specific years, such as the post-2020 period, mark significant increases in appl
 ### **Conclusion**
 
 This analysis provides a comprehensive overview of department application trends over the years. It identifies popular fields, highlights underrepresented ones, and explains the factors driving these patterns. The use of a well-structured visualization ensures that these insights are communicated effectively and clearly.
-
+#Erkek ve Kadın Oranı En Yüksek Bölümler
 ```{r,message = FALSE, warning = FALSE}
 # Gerekli kütüphaneleri yükle
 library(ggplot2)
@@ -366,7 +366,15 @@ print(plot_gender_distribution("Food_Eng", valedictorian_color = "black", axis_c
 
 
 ```
+This differences are results of stereotypes that has been ongoing for years. The gender imbalance in these engineering fields is influenced by societal and cultural norms, historical trends, and perceptions of the disciplines:
+	1.	Mechanical Engineering: Traditionally, mechanical engineering has been viewed as a physically demanding and male-dominated field, often associated with heavy machinery and industrial work. This perception may discourage women from pursuing it, even though the field today is much broader and includes diverse, non-physical applications.
+	2.	Food Engineering: This field is often associated with skills and industries like food production, quality control, and health-related products, which historically align with roles that society has stereotypically assigned to women. As a result, more women may feel encouraged to pursue this discipline.
 
+Efforts are being made to address these stereotypes and create a more balanced representation in all engineering fields
+
+
+
+# 6 Years Average Of Gender Distrubutions
 ```{r,message = FALSE, warning = FALSE}
 # Gerekli kütüphaneleri yükle
 library(ggplot2)
@@ -419,6 +427,10 @@ ggplot(data_long, aes(x = reorder(department, -Percentage), y = Percentage, fill
   )
 
 ```
+
+It is visible that men have a higher percenntage then women overall, this may be a result of stereotypes again, very sadly Türkiye has a prejudice such as "Men should earn money and women should take care of the house". Some of you may not see this in real life but there is a reason why Doğu region has a lower percantage that can not be ignored.
+
+#6 Years of Region Precentages of All Engineering Departments
 ```{r,message = FALSE, warning = FALSE}
 library(knitr)
 include_graphics("a.png")
@@ -490,3 +502,7 @@ ggplot(data=data_tidy, aes(x=interaction(department, year), y=percentage_contrib
   )
 
 ```
+We see that location of University of Hacettepe has a really high relation with the students of Hacettepe, the reasons are economic, sociologic(climate likeness, closeness to family and cultural fitness),so İç Anadolu region dominates in the percentages for 
+geographical distribution of the students. Some of the departments vary such as AI, Industrial Eng, Comp etc. This can be a result of cultural preferences.  
+
+

@@ -199,161 +199,2001 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load necessary libraries</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the datasetyy</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"ya_veri.csv"</span>)</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter out 2018 data</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">filter</span>(data, year <span class="sc">!=</span> <span class="dv">2018</span>)</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to plot gender distribution</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>plot_gender_distribution <span class="ot">&lt;-</span> <span class="cf">function</span>(department_name) {</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  department_data <span class="ot">&lt;-</span> <span class="fu">filter</span>(data, department <span class="sc">==</span> department_name)</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Define y-axis limits based on department</span></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  y_limits <span class="ot">&lt;-</span> <span class="cf">if</span> (department_name <span class="sc">==</span> <span class="st">"Computer_Eng"</span>) {</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">140</span>)</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">110</span>)</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(department_data) <span class="sc">+</span></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_bar</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">factor</span>(year), <span class="at">y =</span> capacity, <span class="at">fill =</span> <span class="st">"Men"</span>), <span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">position =</span> <span class="st">"stack"</span>) <span class="sc">+</span></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_bar</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">factor</span>(year), <span class="at">y =</span> capacity <span class="sc">*</span> (percentage_women <span class="sc">/</span> <span class="dv">100</span>), <span class="at">fill =</span> <span class="st">"Women"</span>), <span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">position =</span> <span class="st">"stack"</span>) <span class="sc">+</span></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">factor</span>(year), <span class="at">y =</span> valedictorian <span class="sc">*</span> <span class="dv">11</span>, <span class="at">group =</span> <span class="dv">1</span>), <span class="at">color =</span> <span class="st">"purple"</span>, <span class="at">linewidth =</span> <span class="fl">0.75</span>) <span class="sc">+</span></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">factor</span>(year), <span class="at">y =</span> valedictorian <span class="sc">*</span> <span class="dv">11</span>), <span class="at">color =</span> <span class="st">"purple"</span>, <span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">factor</span>(year), <span class="at">y =</span> capacity, <span class="at">label =</span> <span class="fu">paste0</span>(percentage_men, <span class="st">"%"</span>)), </span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>              <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>, <span class="at">color =</span> <span class="st">"pink"</span>, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">fontface =</span> <span class="st">"bold"</span>) <span class="sc">+</span></span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">factor</span>(year), <span class="at">y =</span> capacity <span class="sc">*</span> (percentage_women <span class="sc">/</span> <span class="dv">100</span>), <span class="at">label =</span> <span class="fu">paste0</span>(percentage_women, <span class="st">"%"</span>)), </span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>              <span class="at">vjust =</span> <span class="fl">1.5</span>, <span class="at">color =</span> <span class="st">"navy"</span>, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">fontface =</span> <span class="st">"bold"</span>) <span class="sc">+</span></span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">factor</span>(year), <span class="at">y =</span> valedictorian <span class="sc">*</span> <span class="dv">11</span>, <span class="at">label =</span> valedictorian), </span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>              <span class="at">color =</span> <span class="st">"purple"</span>, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">fontface =</span> <span class="st">"bold"</span>, <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">1.5</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_y_continuous</span>(<span class="at">name =</span> <span class="st">"Capacity"</span>, <span class="at">limits =</span> y_limits, <span class="at">breaks =</span> <span class="fu">seq</span>(y_limits[<span class="dv">1</span>], y_limits[<span class="dv">2</span>], <span class="at">by =</span> <span class="dv">10</span>),</span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>                       <span class="at">sec.axis =</span> <span class="fu">sec_axis</span>(<span class="sc">~</span> . <span class="sc">/</span> <span class="dv">11</span>, <span class="at">name =</span> <span class="st">"Valedictorians"</span>, <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">10</span>, <span class="at">by =</span> <span class="dv">1</span>))) <span class="sc">+</span></span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title =</span> department_name, <span class="at">x =</span> <span class="st">"Year"</span>, <span class="at">fill =</span> <span class="st">"Gender"</span>) <span class="sc">+</span></span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Women"</span> <span class="ot">=</span> <span class="st">"pink"</span>, <span class="st">"Men"</span> <span class="ot">=</span> <span class="st">"navy"</span>)) <span class="sc">+</span></span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">size =</span> <span class="dv">12</span>),</span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>          <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">10</span>),</span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>          <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>),</span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>          <span class="at">axis.text.y.right =</span> <span class="fu">element_text</span>(<span class="at">color =</span> <span class="st">"purple"</span>, <span class="at">size =</span> <span class="dv">10</span>),</span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>          <span class="at">axis.title.y.right =</span> <span class="fu">element_text</span>(<span class="at">color =</span> <span class="st">"purple"</span>, <span class="at">size =</span> <span class="dv">12</span>))</span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="co"># List of departments</span></span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>departments <span class="ot">&lt;-</span> <span class="fu">unique</span>(data<span class="sc">$</span>department)</span>
-<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="co"># Create and print plots in a single column</span></span>
-<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (dept <span class="cf">in</span> departments) {</span>
-<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="fu">plot_gender_distribution</span>(dept))</span>
-<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load necessary library</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Read the CSV file</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"ya_veri.csv"</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the data as a table</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 13%">
+<col style="width: 2%">
+<col style="width: 4%">
+<col style="width: 8%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 6%">
+<col style="width: 2%">
+<col style="width: 9%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 4%">
+<col style="width: 12%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">department</th>
+<th style="text-align: right;">year</th>
+<th style="text-align: right;">capacity</th>
+<th style="text-align: right;">percentage_women</th>
+<th style="text-align: right;">percentage_men</th>
+<th style="text-align: right;">valedictorian</th>
+<th style="text-align: right;">ranking</th>
+<th style="text-align: right;">akdeniz</th>
+<th style="text-align: right;">dogu_anadolu</th>
+<th style="text-align: right;">ege</th>
+<th style="text-align: right;">guneydogu_anadolu</th>
+<th style="text-align: right;">ic_anadolu</th>
+<th style="text-align: right;">karadeniz</th>
+<th style="text-align: right;">marmara</th>
+<th style="text-align: right;">number_of_applications</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Chemical_Eng</td>
+<td style="text-align: right;">2018</td>
+<td style="text-align: right;">82</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">81839</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">1533</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Chemical_Eng</td>
+<td style="text-align: right;">2019</td>
+<td style="text-align: right;">82</td>
+<td style="text-align: right;">63.4</td>
+<td style="text-align: right;">36.6</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">65566</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">28</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">23</td>
+<td style="text-align: right;">1510</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Chemical_Eng</td>
+<td style="text-align: right;">2020</td>
+<td style="text-align: right;">82</td>
+<td style="text-align: right;">68.3</td>
+<td style="text-align: right;">31.7</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">61408</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">29</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">2037</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Chemical_Eng</td>
+<td style="text-align: right;">2021</td>
+<td style="text-align: right;">82</td>
+<td style="text-align: right;">63.4</td>
+<td style="text-align: right;">36.6</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">57675</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">32</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">19</td>
+<td style="text-align: right;">1999</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Chemical_Eng</td>
+<td style="text-align: right;">2022</td>
+<td style="text-align: right;">72</td>
+<td style="text-align: right;">59.8</td>
+<td style="text-align: right;">40.2</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">50290</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">35</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">2242</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Chemical_Eng</td>
+<td style="text-align: right;">2023</td>
+<td style="text-align: right;">52</td>
+<td style="text-align: right;">61.1</td>
+<td style="text-align: right;">38.9</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">40836</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">27</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">2355</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Chemical_Eng</td>
+<td style="text-align: right;">2024</td>
+<td style="text-align: right;">52</td>
+<td style="text-align: right;">53.8</td>
+<td style="text-align: right;">46.2</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">35349</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">23</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">1928</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Mining_Eng</td>
+<td style="text-align: right;">2018</td>
+<td style="text-align: right;">62</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">552</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Mining_Eng</td>
+<td style="text-align: right;">2019</td>
+<td style="text-align: right;">62</td>
+<td style="text-align: right;">27.4</td>
+<td style="text-align: right;">72.6</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">174106</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">542</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Mining_Eng</td>
+<td style="text-align: right;">2020</td>
+<td style="text-align: right;">62</td>
+<td style="text-align: right;">22.6</td>
+<td style="text-align: right;">77.4</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">164100</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">38</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">661</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Mining_Eng</td>
+<td style="text-align: right;">2021</td>
+<td style="text-align: right;">62</td>
+<td style="text-align: right;">33.9</td>
+<td style="text-align: right;">66.1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">173048</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">34</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">553</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Mining_Eng</td>
+<td style="text-align: right;">2022</td>
+<td style="text-align: right;">62</td>
+<td style="text-align: right;">21.0</td>
+<td style="text-align: right;">79.0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">165110</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">36</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">602</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Mining_Eng</td>
+<td style="text-align: right;">2023</td>
+<td style="text-align: right;">52</td>
+<td style="text-align: right;">26.9</td>
+<td style="text-align: right;">73.1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">140039</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">32</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">647</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Mining_Eng</td>
+<td style="text-align: right;">2024</td>
+<td style="text-align: right;">41</td>
+<td style="text-align: right;">29.3</td>
+<td style="text-align: right;">70.7</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">120472</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">633</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Geology_Eng</td>
+<td style="text-align: right;">2018</td>
+<td style="text-align: right;">52</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">242699</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">415</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Geology_Eng</td>
+<td style="text-align: right;">2019</td>
+<td style="text-align: right;">52</td>
+<td style="text-align: right;">34.6</td>
+<td style="text-align: right;">65.4</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">257579</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">37</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">354</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Geology_Eng</td>
+<td style="text-align: right;">2020</td>
+<td style="text-align: right;">52</td>
+<td style="text-align: right;">46.2</td>
+<td style="text-align: right;">53.8</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">251358</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">36</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">365</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Geology_Eng</td>
+<td style="text-align: right;">2021</td>
+<td style="text-align: right;">52</td>
+<td style="text-align: right;">38.5</td>
+<td style="text-align: right;">61.5</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">240855</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">377</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Geology_Eng</td>
+<td style="text-align: right;">2022</td>
+<td style="text-align: right;">52</td>
+<td style="text-align: right;">44.2</td>
+<td style="text-align: right;">55.8</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">224396</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">37</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">457</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Geology_Eng</td>
+<td style="text-align: right;">2023</td>
+<td style="text-align: right;">52</td>
+<td style="text-align: right;">51.9</td>
+<td style="text-align: right;">48.1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">185042</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">35</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">778</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Geology_Eng</td>
+<td style="text-align: right;">2024</td>
+<td style="text-align: right;">31</td>
+<td style="text-align: right;">41.9</td>
+<td style="text-align: right;">58.1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">148204</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">17</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">612</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Geomatic_Eng</td>
+<td style="text-align: right;">2018</td>
+<td style="text-align: right;">62</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">114039</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">551</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Geomatic_Eng</td>
+<td style="text-align: right;">2019</td>
+<td style="text-align: right;">62</td>
+<td style="text-align: right;">37.1</td>
+<td style="text-align: right;">62.9</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">128444</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">44</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">411</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Geomatic_Eng</td>
+<td style="text-align: right;">2020</td>
+<td style="text-align: right;">62</td>
+<td style="text-align: right;">50.0</td>
+<td style="text-align: right;">50.0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">131545</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">38</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">390</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Geomatic_Eng</td>
+<td style="text-align: right;">2021</td>
+<td style="text-align: right;">62</td>
+<td style="text-align: right;">41.9</td>
+<td style="text-align: right;">58.1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">184983</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">42</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">254</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Geomatic_Eng</td>
+<td style="text-align: right;">2022</td>
+<td style="text-align: right;">62</td>
+<td style="text-align: right;">43.6</td>
+<td style="text-align: right;">56.5</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">178185</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">468</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Geomatic_Eng</td>
+<td style="text-align: right;">2023</td>
+<td style="text-align: right;">52</td>
+<td style="text-align: right;">53.9</td>
+<td style="text-align: right;">46.2</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">150389</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">35</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">625</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Geomatic_Eng</td>
+<td style="text-align: right;">2024</td>
+<td style="text-align: right;">52</td>
+<td style="text-align: right;">42.3</td>
+<td style="text-align: right;">57.7</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">137188</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">34</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">737</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Enviromental_Eng</td>
+<td style="text-align: right;">2018</td>
+<td style="text-align: right;">62</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">125146</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">760</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Enviromental_Eng</td>
+<td style="text-align: right;">2019</td>
+<td style="text-align: right;">72</td>
+<td style="text-align: right;">63.9</td>
+<td style="text-align: right;">36.1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">147103</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">47</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">652</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Enviromental_Eng</td>
+<td style="text-align: right;">2020</td>
+<td style="text-align: right;">72</td>
+<td style="text-align: right;">77.8</td>
+<td style="text-align: right;">22.2</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">142818</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">47</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">852</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Enviromental_Eng</td>
+<td style="text-align: right;">2021</td>
+<td style="text-align: right;">72</td>
+<td style="text-align: right;">66.7</td>
+<td style="text-align: right;">33.7</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">152431</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">47</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">676</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Enviromental_Eng</td>
+<td style="text-align: right;">2022</td>
+<td style="text-align: right;">72</td>
+<td style="text-align: right;">75.0</td>
+<td style="text-align: right;">25.0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">139163</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">46</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">844</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Enviromental_Eng</td>
+<td style="text-align: right;">2023</td>
+<td style="text-align: right;">72</td>
+<td style="text-align: right;">70.8</td>
+<td style="text-align: right;">29.2</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">118160</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">802</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Enviromental_Eng</td>
+<td style="text-align: right;">2024</td>
+<td style="text-align: right;">54</td>
+<td style="text-align: right;">68.5</td>
+<td style="text-align: right;">31.5</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">104706</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">37</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">755</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Industrial_Eng</td>
+<td style="text-align: right;">2018</td>
+<td style="text-align: right;">62</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">39254</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">2391</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Industrial_Eng</td>
+<td style="text-align: right;">2019</td>
+<td style="text-align: right;">72</td>
+<td style="text-align: right;">55.6</td>
+<td style="text-align: right;">44.4</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">31108</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">37</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">1545</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Industrial_Eng</td>
+<td style="text-align: right;">2020</td>
+<td style="text-align: right;">72</td>
+<td style="text-align: right;">54.2</td>
+<td style="text-align: right;">45.8</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">30300</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">2063</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Industrial_Eng</td>
+<td style="text-align: right;">2021</td>
+<td style="text-align: right;">72</td>
+<td style="text-align: right;">43.1</td>
+<td style="text-align: right;">56.9</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">28683</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">35</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">1906</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Industrial_Eng</td>
+<td style="text-align: right;">2022</td>
+<td style="text-align: right;">72</td>
+<td style="text-align: right;">51.4</td>
+<td style="text-align: right;">48.6</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">20727</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">26</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">2389</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Industrial_Eng</td>
+<td style="text-align: right;">2023</td>
+<td style="text-align: right;">72</td>
+<td style="text-align: right;">44.4</td>
+<td style="text-align: right;">55.6</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">14501</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">2227</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Industrial_Eng</td>
+<td style="text-align: right;">2024</td>
+<td style="text-align: right;">77</td>
+<td style="text-align: right;">53.2</td>
+<td style="text-align: right;">46.8</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">13255</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">40</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">1956</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">AI_Eng</td>
+<td style="text-align: right;">2018</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">AI_Eng</td>
+<td style="text-align: right;">2019</td>
+<td style="text-align: right;">31</td>
+<td style="text-align: right;">16.1</td>
+<td style="text-align: right;">83.9</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">13439</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">9792</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">AI_Eng</td>
+<td style="text-align: right;">2020</td>
+<td style="text-align: right;">31</td>
+<td style="text-align: right;">6.5</td>
+<td style="text-align: right;">93.5</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">8836</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1980</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">AI_Eng</td>
+<td style="text-align: right;">2021</td>
+<td style="text-align: right;">41</td>
+<td style="text-align: right;">12.2</td>
+<td style="text-align: right;">87.8</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">8004</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">1078</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">AI_Eng</td>
+<td style="text-align: right;">2022</td>
+<td style="text-align: right;">41</td>
+<td style="text-align: right;">26.8</td>
+<td style="text-align: right;">73.2</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5735</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">1321</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">AI_Eng</td>
+<td style="text-align: right;">2023</td>
+<td style="text-align: right;">41</td>
+<td style="text-align: right;">34.1</td>
+<td style="text-align: right;">65.9</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4574</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1292</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">AI_Eng</td>
+<td style="text-align: right;">2024</td>
+<td style="text-align: right;">47</td>
+<td style="text-align: right;">19.1</td>
+<td style="text-align: right;">80.9</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">6066</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">1223</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Hydrogeology_Eng</td>
+<td style="text-align: right;">2018</td>
+<td style="text-align: right;">44</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">233</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Hydrogeology_Eng</td>
+<td style="text-align: right;">2019</td>
+<td style="text-align: right;">47</td>
+<td style="text-align: right;">42.9</td>
+<td style="text-align: right;">57.1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">296443</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">107</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Hydrogeology_Eng</td>
+<td style="text-align: right;">2020</td>
+<td style="text-align: right;">41</td>
+<td style="text-align: right;">52.2</td>
+<td style="text-align: right;">47.8</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">298627</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">64</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Hydrogeology_Eng</td>
+<td style="text-align: right;">2021</td>
+<td style="text-align: right;">31</td>
+<td style="text-align: right;">48.3</td>
+<td style="text-align: right;">51.7</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">295037</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">17</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">108</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Hydrogeology_Eng</td>
+<td style="text-align: right;">2022</td>
+<td style="text-align: right;">31</td>
+<td style="text-align: right;">38.7</td>
+<td style="text-align: right;">61.3</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">278231</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">127</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Hydrogeology_Eng</td>
+<td style="text-align: right;">2023</td>
+<td style="text-align: right;">31</td>
+<td style="text-align: right;">22.6</td>
+<td style="text-align: right;">77.4</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">223758</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">21</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">411</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Hydrogeology_Eng</td>
+<td style="text-align: right;">2024</td>
+<td style="text-align: right;">26</td>
+<td style="text-align: right;">34.6</td>
+<td style="text-align: right;">65.4</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">189471</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">21</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">400</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Physics_Eng</td>
+<td style="text-align: right;">2018</td>
+<td style="text-align: right;">82</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">207456</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">452</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Physics_Eng</td>
+<td style="text-align: right;">2019</td>
+<td style="text-align: right;">82</td>
+<td style="text-align: right;">51.2</td>
+<td style="text-align: right;">48.8</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">199357</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">513</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Physics_Eng</td>
+<td style="text-align: right;">2020</td>
+<td style="text-align: right;">82</td>
+<td style="text-align: right;">43.9</td>
+<td style="text-align: right;">56.1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">171979</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">34</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">21</td>
+<td style="text-align: right;">580</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Physics_Eng</td>
+<td style="text-align: right;">2021</td>
+<td style="text-align: right;">82</td>
+<td style="text-align: right;">45.1</td>
+<td style="text-align: right;">54.9</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">155828</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">28</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">29</td>
+<td style="text-align: right;">625</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Physics_Eng</td>
+<td style="text-align: right;">2022</td>
+<td style="text-align: right;">82</td>
+<td style="text-align: right;">37.8</td>
+<td style="text-align: right;">62.2</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">128652</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">34</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">728</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Physics_Eng</td>
+<td style="text-align: right;">2023</td>
+<td style="text-align: right;">62</td>
+<td style="text-align: right;">46.8</td>
+<td style="text-align: right;">53.2</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">85874</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">27</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">1108</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Physics_Eng</td>
+<td style="text-align: right;">2024</td>
+<td style="text-align: right;">67</td>
+<td style="text-align: right;">40.3</td>
+<td style="text-align: right;">59.7</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">74813</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">27</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">1031</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Computer_Eng</td>
+<td style="text-align: right;">2018</td>
+<td style="text-align: right;">105</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">17555</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">5345</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Computer_Eng</td>
+<td style="text-align: right;">2019</td>
+<td style="text-align: right;">103</td>
+<td style="text-align: right;">18.5</td>
+<td style="text-align: right;">81.6</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">11743</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">53</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">3534</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Computer_Eng</td>
+<td style="text-align: right;">2020</td>
+<td style="text-align: right;">103</td>
+<td style="text-align: right;">18.4</td>
+<td style="text-align: right;">81.6</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">7208</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">44</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">3776</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Computer_Eng</td>
+<td style="text-align: right;">2021</td>
+<td style="text-align: right;">108</td>
+<td style="text-align: right;">20.4</td>
+<td style="text-align: right;">79.6</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">5248</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">17</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">46</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">3192</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Computer_Eng</td>
+<td style="text-align: right;">2022</td>
+<td style="text-align: right;">108</td>
+<td style="text-align: right;">13.9</td>
+<td style="text-align: right;">86.1</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">3576</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">40</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">3918</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Computer_Eng</td>
+<td style="text-align: right;">2023</td>
+<td style="text-align: right;">115</td>
+<td style="text-align: right;">16.1</td>
+<td style="text-align: right;">83.9</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">3388</td>
+<td style="text-align: right;">21</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">42</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">2480</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Computer_Eng</td>
+<td style="text-align: right;">2024</td>
+<td style="text-align: right;">123</td>
+<td style="text-align: right;">16.3</td>
+<td style="text-align: right;">83.7</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">4377</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">42</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">2702</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Mechanical_Eng</td>
+<td style="text-align: right;">2018</td>
+<td style="text-align: right;">62</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">29422</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">3963</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Mechanical_Eng</td>
+<td style="text-align: right;">2019</td>
+<td style="text-align: right;">72</td>
+<td style="text-align: right;">6.9</td>
+<td style="text-align: right;">93.1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">28520</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">48</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">1622</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Mechanical_Eng</td>
+<td style="text-align: right;">2020</td>
+<td style="text-align: right;">82</td>
+<td style="text-align: right;">22.0</td>
+<td style="text-align: right;">78.0</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">27949</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">52</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">1584</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Mechanical_Eng</td>
+<td style="text-align: right;">2021</td>
+<td style="text-align: right;">82</td>
+<td style="text-align: right;">17.1</td>
+<td style="text-align: right;">82.9</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">29512</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">26</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">1218</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Mechanical_Eng</td>
+<td style="text-align: right;">2022</td>
+<td style="text-align: right;">82</td>
+<td style="text-align: right;">12.2</td>
+<td style="text-align: right;">87.8</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">23706</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">44</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">1558</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Mechanical_Eng</td>
+<td style="text-align: right;">2023</td>
+<td style="text-align: right;">82</td>
+<td style="text-align: right;">9.8</td>
+<td style="text-align: right;">90.2</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">17947</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">49</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">1546</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Mechanical_Eng</td>
+<td style="text-align: right;">2024</td>
+<td style="text-align: right;">88</td>
+<td style="text-align: right;">15.9</td>
+<td style="text-align: right;">84.1</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">15819</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">46</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">1640</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Electrical_Electronic_Eng</td>
+<td style="text-align: right;">2018</td>
+<td style="text-align: right;">105</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">25708</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">3812</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Electrical_Electronic_Eng</td>
+<td style="text-align: right;">2019</td>
+<td style="text-align: right;">103</td>
+<td style="text-align: right;">20.4</td>
+<td style="text-align: right;">79.6</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">16067</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">69</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">2180</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Electrical_Electronic_Eng</td>
+<td style="text-align: right;">2020</td>
+<td style="text-align: right;">103</td>
+<td style="text-align: right;">18.5</td>
+<td style="text-align: right;">81.6</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">12454</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">72</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">2181</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Electrical_Electronic_Eng</td>
+<td style="text-align: right;">2021</td>
+<td style="text-align: right;">103</td>
+<td style="text-align: right;">18.5</td>
+<td style="text-align: right;">81.6</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">11657</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">64</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">1647</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Electrical_Electronic_Eng</td>
+<td style="text-align: right;">2022</td>
+<td style="text-align: right;">103</td>
+<td style="text-align: right;">17.5</td>
+<td style="text-align: right;">82.5</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">8078</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">58</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">2033</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Electrical_Electronic_Eng</td>
+<td style="text-align: right;">2023</td>
+<td style="text-align: right;">103</td>
+<td style="text-align: right;">22.3</td>
+<td style="text-align: right;">77.7</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">6838</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">61</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">1942</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Electrical_Electronic_Eng</td>
+<td style="text-align: right;">2024</td>
+<td style="text-align: right;">103</td>
+<td style="text-align: right;">22.3</td>
+<td style="text-align: right;">77.7</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">6310</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">61</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">1942</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Food_Eng</td>
+<td style="text-align: right;">2018</td>
+<td style="text-align: right;">82</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">189964</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">1408</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Food_Eng</td>
+<td style="text-align: right;">2019</td>
+<td style="text-align: right;">82</td>
+<td style="text-align: right;">80.5</td>
+<td style="text-align: right;">19.5</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">118323</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">49</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">927</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Food_Eng</td>
+<td style="text-align: right;">2020</td>
+<td style="text-align: right;">82</td>
+<td style="text-align: right;">62.4</td>
+<td style="text-align: right;">36.6</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">114530</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">49</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">17</td>
+<td style="text-align: right;">1347</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Food_Eng</td>
+<td style="text-align: right;">2021</td>
+<td style="text-align: right;">82</td>
+<td style="text-align: right;">81.7</td>
+<td style="text-align: right;">18.3</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">125744</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">939</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Food_Eng</td>
+<td style="text-align: right;">2022</td>
+<td style="text-align: right;">82</td>
+<td style="text-align: right;">79.3</td>
+<td style="text-align: right;">20.7</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">115515</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">43</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">1285</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Food_Eng</td>
+<td style="text-align: right;">2023</td>
+<td style="text-align: right;">62</td>
+<td style="text-align: right;">77.4</td>
+<td style="text-align: right;">22.6</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">93963</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">34</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">1135</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Food_Eng</td>
+<td style="text-align: right;">2024</td>
+<td style="text-align: right;">52</td>
+<td style="text-align: right;">84.6</td>
+<td style="text-align: right;">15.4</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">91258</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">26</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">979</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Nuclear_Energy_Eng</td>
+<td style="text-align: right;">2018</td>
+<td style="text-align: right;">62</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">196200</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">1215</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Nuclear_Energy_Eng</td>
+<td style="text-align: right;">2019</td>
+<td style="text-align: right;">62</td>
+<td style="text-align: right;">37.1</td>
+<td style="text-align: right;">62.9</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">97024</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">26</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">949</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Nuclear_Energy_Eng</td>
+<td style="text-align: right;">2020</td>
+<td style="text-align: right;">62</td>
+<td style="text-align: right;">25.8</td>
+<td style="text-align: right;">74.2</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">92142</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">28</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">830</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Nuclear_Energy_Eng</td>
+<td style="text-align: right;">2021</td>
+<td style="text-align: right;">62</td>
+<td style="text-align: right;">30.7</td>
+<td style="text-align: right;">69.4</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">97747</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">25</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">731</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Nuclear_Energy_Eng</td>
+<td style="text-align: right;">2022</td>
+<td style="text-align: right;">62</td>
+<td style="text-align: right;">32.3</td>
+<td style="text-align: right;">67.7</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">86946</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">1046</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Nuclear_Energy_Eng</td>
+<td style="text-align: right;">2023</td>
+<td style="text-align: right;">52</td>
+<td style="text-align: right;">30.8</td>
+<td style="text-align: right;">69.2</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">65782</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">29</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">1295</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Nuclear_Energy_Eng</td>
+<td style="text-align: right;">2024</td>
+<td style="text-align: right;">57</td>
+<td style="text-align: right;">40.4</td>
+<td style="text-align: right;">59.6</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">58558</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">25</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">1100</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Civi_Eng</td>
+<td style="text-align: right;">2018</td>
+<td style="text-align: right;">62</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">57204</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">1769</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Civi_Eng</td>
+<td style="text-align: right;">2019</td>
+<td style="text-align: right;">72</td>
+<td style="text-align: right;">19.4</td>
+<td style="text-align: right;">80.6</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">78444</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">53</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">475</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Civi_Eng</td>
+<td style="text-align: right;">2020</td>
+<td style="text-align: right;">72</td>
+<td style="text-align: right;">18.1</td>
+<td style="text-align: right;">81.9</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">77347</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">46</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">1445</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Civi_Eng</td>
+<td style="text-align: right;">2021</td>
+<td style="text-align: right;">82</td>
+<td style="text-align: right;">18.3</td>
+<td style="text-align: right;">81.7</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">92077</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">55</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">823</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Civi_Eng</td>
+<td style="text-align: right;">2022</td>
+<td style="text-align: right;">82</td>
+<td style="text-align: right;">28.1</td>
+<td style="text-align: right;">72.0</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">87061</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">65</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1181</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Civi_Eng</td>
+<td style="text-align: right;">2023</td>
+<td style="text-align: right;">52</td>
+<td style="text-align: right;">23.1</td>
+<td style="text-align: right;">76.9</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">76051</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">32</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1184</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Civi_Eng</td>
+<td style="text-align: right;">2024</td>
+<td style="text-align: right;">52</td>
+<td style="text-align: right;">13.5</td>
+<td style="text-align: right;">86.5</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">70821</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1139</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load necessary libraries</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the datasetyy</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"ya_veri.csv"</span>)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter out 2018 data</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">filter</span>(data, year <span class="sc">!=</span> <span class="dv">2018</span>)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to plot gender distribution</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>plot_gender_distribution <span class="ot">&lt;-</span> <span class="cf">function</span>(department_name) {</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  department_data <span class="ot">&lt;-</span> <span class="fu">filter</span>(data, department <span class="sc">==</span> department_name)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Define y-axis limits based on department</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>  y_limits <span class="ot">&lt;-</span> <span class="cf">if</span> (department_name <span class="sc">==</span> <span class="st">"Computer_Eng"</span>) {</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">140</span>)</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">110</span>)</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(department_data) <span class="sc">+</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_bar</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">factor</span>(year), <span class="at">y =</span> capacity, <span class="at">fill =</span> <span class="st">"Men"</span>), <span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">position =</span> <span class="st">"stack"</span>) <span class="sc">+</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_bar</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">factor</span>(year), <span class="at">y =</span> capacity <span class="sc">*</span> (percentage_women <span class="sc">/</span> <span class="dv">100</span>), <span class="at">fill =</span> <span class="st">"Women"</span>), <span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">position =</span> <span class="st">"stack"</span>) <span class="sc">+</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">factor</span>(year), <span class="at">y =</span> valedictorian <span class="sc">*</span> <span class="dv">11</span>, <span class="at">group =</span> <span class="dv">1</span>), <span class="at">color =</span> <span class="st">"purple"</span>, <span class="at">linewidth =</span> <span class="fl">0.75</span>) <span class="sc">+</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">factor</span>(year), <span class="at">y =</span> valedictorian <span class="sc">*</span> <span class="dv">11</span>), <span class="at">color =</span> <span class="st">"purple"</span>, <span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">factor</span>(year), <span class="at">y =</span> capacity, <span class="at">label =</span> <span class="fu">paste0</span>(percentage_men, <span class="st">"%"</span>)), </span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>              <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>, <span class="at">color =</span> <span class="st">"pink"</span>, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">fontface =</span> <span class="st">"bold"</span>) <span class="sc">+</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">factor</span>(year), <span class="at">y =</span> capacity <span class="sc">*</span> (percentage_women <span class="sc">/</span> <span class="dv">100</span>), <span class="at">label =</span> <span class="fu">paste0</span>(percentage_women, <span class="st">"%"</span>)), </span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>              <span class="at">vjust =</span> <span class="fl">1.5</span>, <span class="at">color =</span> <span class="st">"navy"</span>, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">fontface =</span> <span class="st">"bold"</span>) <span class="sc">+</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">factor</span>(year), <span class="at">y =</span> valedictorian <span class="sc">*</span> <span class="dv">11</span>, <span class="at">label =</span> valedictorian), </span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>              <span class="at">color =</span> <span class="st">"purple"</span>, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">fontface =</span> <span class="st">"bold"</span>, <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">1.5</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_y_continuous</span>(<span class="at">name =</span> <span class="st">"Capacity"</span>, <span class="at">limits =</span> y_limits, <span class="at">breaks =</span> <span class="fu">seq</span>(y_limits[<span class="dv">1</span>], y_limits[<span class="dv">2</span>], <span class="at">by =</span> <span class="dv">10</span>),</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>                       <span class="at">sec.axis =</span> <span class="fu">sec_axis</span>(<span class="sc">~</span> . <span class="sc">/</span> <span class="dv">11</span>, <span class="at">name =</span> <span class="st">"Valedictorians"</span>, <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">10</span>, <span class="at">by =</span> <span class="dv">1</span>))) <span class="sc">+</span></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title =</span> department_name, <span class="at">x =</span> <span class="st">"Year"</span>, <span class="at">fill =</span> <span class="st">"Gender"</span>) <span class="sc">+</span></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Women"</span> <span class="ot">=</span> <span class="st">"pink"</span>, <span class="st">"Men"</span> <span class="ot">=</span> <span class="st">"navy"</span>)) <span class="sc">+</span></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">size =</span> <span class="dv">12</span>),</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>          <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">10</span>),</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>          <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>),</span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>          <span class="at">axis.text.y.right =</span> <span class="fu">element_text</span>(<span class="at">color =</span> <span class="st">"purple"</span>, <span class="at">size =</span> <span class="dv">10</span>),</span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>          <span class="at">axis.title.y.right =</span> <span class="fu">element_text</span>(<span class="at">color =</span> <span class="st">"purple"</span>, <span class="at">size =</span> <span class="dv">12</span>))</span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a><span class="co"># List of departments</span></span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>departments <span class="ot">&lt;-</span> <span class="fu">unique</span>(data<span class="sc">$</span>department)</span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a><span class="co"># Create and print plots in a single column</span></span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (dept <span class="cf">in</span> departments) {</span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="fu">plot_gender_distribution</span>(dept))</span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="data_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="data_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="data_files/figure-html/unnamed-chunk-1-2.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="data_files/figure-html/unnamed-chunk-2-2.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="data_files/figure-html/unnamed-chunk-1-3.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="data_files/figure-html/unnamed-chunk-2-3.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="data_files/figure-html/unnamed-chunk-1-4.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="data_files/figure-html/unnamed-chunk-2-4.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="data_files/figure-html/unnamed-chunk-1-5.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="data_files/figure-html/unnamed-chunk-2-5.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="data_files/figure-html/unnamed-chunk-1-6.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="data_files/figure-html/unnamed-chunk-2-6.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="data_files/figure-html/unnamed-chunk-1-7.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="data_files/figure-html/unnamed-chunk-2-7.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="data_files/figure-html/unnamed-chunk-1-8.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="data_files/figure-html/unnamed-chunk-2-8.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="data_files/figure-html/unnamed-chunk-1-9.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="data_files/figure-html/unnamed-chunk-2-9.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="data_files/figure-html/unnamed-chunk-1-10.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="data_files/figure-html/unnamed-chunk-2-10.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="data_files/figure-html/unnamed-chunk-1-11.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="data_files/figure-html/unnamed-chunk-2-11.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="data_files/figure-html/unnamed-chunk-1-12.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="data_files/figure-html/unnamed-chunk-2-12.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="data_files/figure-html/unnamed-chunk-1-13.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="data_files/figure-html/unnamed-chunk-2-13.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="data_files/figure-html/unnamed-chunk-1-14.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="data_files/figure-html/unnamed-chunk-2-14.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="data_files/figure-html/unnamed-chunk-1-15.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="data_files/figure-html/unnamed-chunk-2-15.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -427,71 +2267,71 @@ Departments like <code>Computer_Eng</code> accommodate larger student intakes wh
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load necessary libraries</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(forcats)</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)  <span class="co"># For str_wrap()</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the dataset</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"ya_veri.csv"</span>)</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Exclude 2018 and reshape the data</span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>data_tidy <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(year <span class="sc">!=</span> <span class="dv">2018</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(department, year, akdeniz, dogu_anadolu, ege, guneydogu_anadolu, ic_anadolu, karadeniz, marmara) <span class="sc">%&gt;%</span></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">c</span>(akdeniz, dogu_anadolu, ege, guneydogu_anadolu, ic_anadolu, karadeniz, marmara),</span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"region"</span>,</span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"percentage_contribution"</span></span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">region =</span> <span class="fu">fct_relevel</span>(region, </span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ic_anadolu"</span>, <span class="st">"marmara"</span>, <span class="st">"guneydogu_anadolu"</span>, <span class="st">"doğu_anadolu"</span>, <span class="st">"akdeniz"</span>, <span class="st">"ege"</span>, <span class="st">"karadeniz"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(percentage_contribution)) <span class="sc">%&gt;%</span></span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(department, year) <span class="sc">%&gt;%</span></span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">region =</span> <span class="fu">fct_reorder</span>(region, <span class="sc">-</span>percentage_contribution, <span class="at">.desc =</span> <span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the color palette, including all regions</span></span>
-<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>region_colors <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>  <span class="st">"ic_anadolu"</span> <span class="ot">=</span> <span class="st">"#e8736b"</span>,</span>
-<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>  <span class="st">"marmara"</span> <span class="ot">=</span> <span class="st">"#54a115"</span>,</span>
-<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>  <span class="st">"guneydogu_anadolu"</span> <span class="ot">=</span> <span class="st">"#053eb0"</span>,</span>
-<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>  <span class="st">"doğu_anadolu"</span> <span class="ot">=</span> <span class="st">"#ff9900"</span>,</span>
-<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>  <span class="st">"akdeniz"</span> <span class="ot">=</span> <span class="st">"#7705b0"</span>,</span>
-<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>  <span class="st">"karadeniz"</span> <span class="ot">=</span> <span class="st">"#b0054a"</span>,</span>
-<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>  <span class="st">"ege"</span> <span class="ot">=</span> <span class="st">"#d1f299"</span></span>
-<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a><span class="co"># Department-Based Plot</span></span>
-<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>data_tidy, <span class="fu">aes</span>(<span class="at">x=</span>year, <span class="at">y=</span>percentage_contribution, <span class="at">fill=</span>region)) <span class="sc">+</span></span>
-<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat=</span><span class="st">"identity"</span>, <span class="at">position=</span><span class="st">"fill"</span>) <span class="sc">+</span></span>
-<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>department, <span class="at">ncol =</span> <span class="dv">4</span>) <span class="sc">+</span>  <span class="co"># Adjust facet layout</span></span>
-<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>    <span class="at">title=</span><span class="st">"Yearly Breakdown by Department"</span>,</span>
-<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>    <span class="at">x=</span><span class="st">"Year"</span>,</span>
-<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>    <span class="at">y=</span><span class="st">"Percentage Contribution"</span>,</span>
-<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill=</span><span class="st">"Region"</span></span>
-<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">percent_format</span>()) <span class="sc">+</span></span>
-<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> region_colors) <span class="sc">+</span></span>
-<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">10</span>) <span class="sc">+</span></span>
-<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>    <span class="at">strip.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>, <span class="at">face =</span> <span class="st">"bold"</span>),</span>
-<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>, <span class="at">vjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">6</span>),</span>
-<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>),</span>
-<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">9</span>),</span>
-<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span>, <span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
-<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>),</span>
-<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>)</span>
-<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load necessary libraries</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(forcats)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the dataset</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"ya_veri.csv"</span>)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Exclude 2018 and reshape the data</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>data_tidy <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(year <span class="sc">!=</span> <span class="dv">2018</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(department, year, akdeniz, dogu_anadolu, ege, guneydogu_anadolu, ic_anadolu, karadeniz, marmara) <span class="sc">%&gt;%</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">c</span>(akdeniz, dogu_anadolu, ege, guneydogu_anadolu, ic_anadolu, karadeniz, marmara),</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"region"</span>,</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"percentage_contribution"</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">region =</span> <span class="fu">fct_relevel</span>(region, </span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ic_anadolu"</span>, <span class="st">"marmara"</span>, <span class="st">"guneydogu_anadolu"</span>, <span class="st">"dogu_anadolu"</span>, <span class="st">"akdeniz"</span>, <span class="st">"ege"</span>, <span class="st">"karadeniz"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(percentage_contribution)) <span class="sc">%&gt;%</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(department, year) <span class="sc">%&gt;%</span></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">region =</span> <span class="fu">fct_reorder</span>(region, <span class="sc">-</span>percentage_contribution, <span class="at">.desc =</span> <span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the color palette, including all regions</span></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>region_colors <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>  <span class="st">"ic_anadolu"</span> <span class="ot">=</span> <span class="st">"#e8736b"</span>,</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>  <span class="st">"marmara"</span> <span class="ot">=</span> <span class="st">"#54a115"</span>,</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>  <span class="st">"guneydogu_anadolu"</span> <span class="ot">=</span> <span class="st">"#053eb0"</span>,</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>  <span class="st">"dogu_anadolu"</span> <span class="ot">=</span> <span class="st">"#ff9900"</span>,  <span class="co"># Ensure correct name here</span></span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>  <span class="st">"akdeniz"</span> <span class="ot">=</span> <span class="st">"#7705b0"</span>,</span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>  <span class="st">"karadeniz"</span> <span class="ot">=</span> <span class="st">"#b0054a"</span>,</span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>  <span class="st">"ege"</span> <span class="ot">=</span> <span class="st">"#d1f299"</span></span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a><span class="co"># Department-Based Plot</span></span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>data_tidy, <span class="fu">aes</span>(<span class="at">x=</span>year, <span class="at">y=</span>percentage_contribution, <span class="at">fill=</span>region)) <span class="sc">+</span></span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat=</span><span class="st">"identity"</span>, <span class="at">position=</span><span class="st">"fill"</span>) <span class="sc">+</span></span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>department, <span class="at">ncol =</span> <span class="dv">4</span>) <span class="sc">+</span>  <span class="co"># Adjust facet layout</span></span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>    <span class="at">title=</span><span class="st">"Yearly Breakdown by Department"</span>,</span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>    <span class="at">x=</span><span class="st">"Year"</span>,</span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>    <span class="at">y=</span><span class="st">"Percentage Contribution"</span>,</span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill=</span><span class="st">"Region"</span></span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">percent_format</span>()) <span class="sc">+</span></span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> region_colors) <span class="sc">+</span></span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">10</span>) <span class="sc">+</span></span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>    <span class="at">strip.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>, <span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>, <span class="at">vjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">6</span>),</span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>),</span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">9</span>),</span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span>, <span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>),</span>
+<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>)</span>
+<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="data_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="data_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -539,88 +2379,6 @@ Departments like <code>Computer_Eng</code> accommodate larger student intakes wh
 <section id="conclusion" class="level3">
 <h3 class="anchored" data-anchor-id="conclusion"><strong>Conclusion</strong></h3>
 <p>This analysis highlights regional preferences and shifts in contributions to university departments. It provides a clear understanding of dominant regions, stable contributors, and regions affected by external influences. The visualization effectively communicates these trends, offering valuable insights into regional dynamics.</p>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">include_graphics</span>(<span class="st">"a.png"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="a.png" class="img-fluid figure-img"></p>
-</figure>
-</div>
-</div>
-</div>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load necessary libraries</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(forcats)</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)  <span class="co"># For str_wrap()</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the dataset</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"ya_veri.csv"</span>)</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Exclude 2018 and reshape the data</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>data_tidy <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(year <span class="sc">!=</span> <span class="dv">2018</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(department, year, akdeniz, dogu_anadolu, ege, guneydogu_anadolu, ic_anadolu, karadeniz, marmara) <span class="sc">%&gt;%</span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">c</span>(akdeniz, dogu_anadolu, ege, guneydogu_anadolu, ic_anadolu, karadeniz, marmara),</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"region"</span>,</span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"percentage_contribution"</span></span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">region =</span> <span class="fu">fct_relevel</span>(region, </span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ic_anadolu"</span>, <span class="st">"marmara"</span>, <span class="st">"guneydogu_anadolu"</span>, <span class="st">"doğu_anadolu"</span>, <span class="st">"akdeniz"</span>, <span class="st">"ege"</span>, <span class="st">"karadeniz"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(percentage_contribution)) <span class="sc">%&gt;%</span></span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(department, year) <span class="sc">%&gt;%</span></span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">region =</span> <span class="fu">fct_reorder</span>(region, <span class="sc">-</span>percentage_contribution, <span class="at">.desc =</span> <span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the color palette, including all regions</span></span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>region_colors <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>  <span class="st">"ic_anadolu"</span> <span class="ot">=</span> <span class="st">"#e8736b"</span>,</span>
-<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>  <span class="st">"marmara"</span> <span class="ot">=</span> <span class="st">"#54a115"</span>,</span>
-<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>  <span class="st">"guneydogu_anadolu"</span> <span class="ot">=</span> <span class="st">"#053eb0"</span>,</span>
-<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>  <span class="st">"doğu_anadolu"</span> <span class="ot">=</span> <span class="st">"#ff9900"</span>,</span>
-<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>  <span class="st">"akdeniz"</span> <span class="ot">=</span> <span class="st">"#7705b0"</span>,</span>
-<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>  <span class="st">"karadeniz"</span> <span class="ot">=</span> <span class="st">"#b0054a"</span>,</span>
-<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>  <span class="st">"ege"</span> <span class="ot">=</span> <span class="st">"#d1f299"</span></span>
-<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot: Department Breakdown by Year</span></span>
-<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>data_tidy, <span class="fu">aes</span>(<span class="at">x=</span><span class="fu">interaction</span>(department, year), <span class="at">y=</span>percentage_contribution, <span class="at">fill=</span>region)) <span class="sc">+</span></span>
-<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat=</span><span class="st">"identity"</span>, <span class="at">position=</span><span class="st">"fill"</span>) <span class="sc">+</span></span>
-<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>    <span class="at">title=</span><span class="st">"Department and Year"</span>,</span>
-<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>    <span class="at">x=</span><span class="st">"Department and Year (Alphabetical Order)"</span>,</span>
-<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>    <span class="at">y=</span><span class="st">"Percentage Contribution"</span>,</span>
-<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill=</span><span class="st">"Region"</span></span>
-<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">percent_format</span>()) <span class="sc">+</span></span>
-<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> region_colors) <span class="sc">+</span></span>
-<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">10</span>) <span class="sc">+</span></span>
-<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_blank</span>(),  <span class="co"># Remove x-axis labels for less clutter</span></span>
-<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.ticks.x =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>),</span>
-<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>),</span>
-<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">16</span>, <span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">lineheight =</span> <span class="fl">1.2</span>),  <span class="co"># Two-line title</span></span>
-<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title.position =</span> <span class="st">"plot"</span>,</span>
-<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>),  <span class="co"># Smaller legend title</span></span>
-<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>),  <span class="co"># Smaller legend text</span></span>
-<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.key.size =</span> <span class="fu">unit</span>(<span class="fl">0.5</span>, <span class="st">"cm"</span>),  <span class="co"># Smaller legend boxes</span></span>
-<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.spacing.y =</span> <span class="fu">unit</span>(<span class="fl">0.2</span>, <span class="st">"cm"</span>),  <span class="co"># Reduce vertical spacing between legend items</span></span>
-<span id="cb4-62"><a href="#cb4-62" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.margin =</span> <span class="fu">margin</span>(<span class="dv">40</span>, <span class="dv">60</span>, <span class="dv">40</span>, <span class="dv">40</span>)  <span class="co"># Add right margin for wider plot</span></span>
-<span id="cb4-63"><a href="#cb4-63" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
 
 
 </section>

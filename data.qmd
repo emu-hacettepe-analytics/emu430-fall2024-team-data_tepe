@@ -3,6 +3,16 @@ title: "Visualizations to Analyze"
 author: "Datatepe"
 output: html_document
 ---
+```{r,message = FALSE, warning = FALSE}
+# Load necessary library
+library(readr)
+
+# Read the CSV file
+data <- read_csv("ya_veri.csv")
+
+# Display the data as a table
+knitr::kable(data)
+```
 
 ```{r,message = FALSE, warning = FALSE}
 
